@@ -13,6 +13,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 FIGS = ROOT / "figures"
+RESULTS_DIR = ROOT / "results"
 
 DATASETS = [
     ("adult", "Adult"),
@@ -84,7 +85,7 @@ def collect_dataset(dname):
     """Return dict: method -> list of row dicts (sorted by lam)."""
     out = {}
     for method, suffix in METHOD_FILES.items():
-        path = ROOT / f"results_split_{dname}_{suffix}.txt"
+        path = RESULTS_DIR / f"results_split_{dname}_{suffix}.txt"
         if not path.exists():
             continue
         rows = parse_file(path)

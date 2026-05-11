@@ -9,6 +9,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+RESULTS_DIR = ROOT / "results"
 
 DATASETS = [
     ("adult", "Adult", "Acc", False),
@@ -56,7 +57,7 @@ def parse_file(path):
 
 
 def best_op(dname, mname, unfair_perf, is_mse):
-    path = ROOT / f"results_split_{dname}_{METHOD_FILES[mname]}.txt"
+    path = RESULTS_DIR / f"results_split_{dname}_{METHOD_FILES[mname]}.txt"
     if not path.exists():
         return None
     rows = parse_file(path)
@@ -83,7 +84,7 @@ def main():
     # Get unfair refs
     unfair = {}
     for dkey, _dn, _pn, is_mse in DATASETS:
-        rows = parse_file(ROOT / f"results_split_{dkey}_Unfair.txt")
+        rows = parse_file(RESULTS_DIR / f"results_split_{dkey}_Unfair.txt")
         if rows:
             unfair[dkey] = rows[0]
     # Print Unfair row

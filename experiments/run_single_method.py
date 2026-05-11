@@ -34,7 +34,9 @@ lambdas = [0.01, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0, 100.0, 500.0]
 train_fn = METHODS[method]
 
 safe = method.replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_')
-outfile = f"results_split_{dataset}_{safe}.txt"
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
+os.makedirs(RESULTS_DIR, exist_ok=True)
+outfile = os.path.join(RESULTS_DIR, f"results_split_{dataset}_{safe}.txt")
 print(f"Writing to {outfile}", flush=True)
 with open(outfile, "w") as f:
     f.write(f"# dataset={dataset} method={method} gpu={gpu} task={task} n={n} d={X_np.shape[1]}\n")
