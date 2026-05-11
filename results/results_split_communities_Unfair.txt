@@ -1,0 +1,2 @@
+# dataset=communities method=Unfair gpu=0 task=regression n=1994 d=99
+  Unfair                             (lam=0.0) | MSE: 0.0191+/-0.0021 | GDP: 0.0291+/-0.0043 | MI: 0.1326 | MI_sk: 0.3905

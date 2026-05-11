@@ -1,0 +1,10 @@
+# dataset=acs_income method=LAFTR (binned) gpu=6 task=classification n=20000 d=9
+  LAFTR (binned)                     (lam=0.01) | Acc: 0.7894+/-0.0060 | GDP: 0.5151+/-0.0633 | MI: 0.0799 | MI_sk: 0.3778
+  LAFTR (binned)                     (lam=0.1) | Acc: 0.7872+/-0.0033 | GDP: 0.4745+/-0.0375 | MI: 0.0000 | MI_sk: 0.3426
+  LAFTR (binned)                     (lam=0.5) | Acc: 0.7807+/-0.0092 | GDP: 0.2711+/-0.0343 | MI: 0.0000 | MI_sk: 0.2924
+  LAFTR (binned)                     (lam=1.0) | Acc: 0.7764+/-0.0079 | GDP: 0.2040+/-0.0302 | MI: 0.0000 | MI_sk: 0.2910
+  LAFTR (binned)                     (lam=5.0) | Acc: 0.7343+/-0.0195 | GDP: 0.0921+/-0.0273 | MI: 0.0000 | MI_sk: 0.2644
+  LAFTR (binned)                     (lam=10.0) | Acc: 0.7378+/-0.0262 | GDP: 0.0824+/-0.0390 | MI: 0.0000 | MI_sk: 0.2656
+  LAFTR (binned)                     (lam=50.0) | Acc: 0.7300+/-0.0327 | GDP: 0.1010+/-0.0427 | MI: 0.0000 | MI_sk: 0.2634
+  LAFTR (binned)                     (lam=100.0) | Acc: 0.7525+/-0.0118 | GDP: 0.0993+/-0.0229 | MI: 0.0000 | MI_sk: 0.2618
+  LAFTR (binned)                     (lam=500.0) | Acc: 0.7505+/-0.0305 | GDP: 0.1809+/-0.0805 | MI: 0.0000 | MI_sk: 0.2629

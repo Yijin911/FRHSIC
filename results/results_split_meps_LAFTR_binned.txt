@@ -1,0 +1,10 @@
+# dataset=meps method=LAFTR (binned) gpu=6 task=classification n=13283 d=19
+  LAFTR (binned)                     (lam=0.01) | Acc: 0.8035+/-0.0048 | GDP: 0.6183+/-0.0129 | MI: 0.1458 | MI_sk: 0.4163
+  LAFTR (binned)                     (lam=0.1) | Acc: 0.8032+/-0.0059 | GDP: 0.5302+/-0.0186 | MI: 0.0132 | MI_sk: 0.3761
+  LAFTR (binned)                     (lam=0.5) | Acc: 0.7949+/-0.0033 | GDP: 0.2688+/-0.0222 | MI: 0.0000 | MI_sk: 0.2752
+  LAFTR (binned)                     (lam=1.0) | Acc: 0.7862+/-0.0154 | GDP: 0.1396+/-0.0338 | MI: 0.0000 | MI_sk: 0.2824
+  LAFTR (binned)                     (lam=5.0) | Acc: 0.7818+/-0.0087 | GDP: 0.0465+/-0.0205 | MI: 0.0000 | MI_sk: 0.2633
+  LAFTR (binned)                     (lam=10.0) | Acc: 0.7903+/-0.0067 | GDP: 0.1301+/-0.0964 | MI: 0.0000 | MI_sk: 0.2745
+  LAFTR (binned)                     (lam=50.0) | Acc: 0.7921+/-0.0075 | GDP: 0.1936+/-0.1261 | MI: 0.0000 | MI_sk: 0.2829
+  LAFTR (binned)                     (lam=100.0) | Acc: 0.7925+/-0.0057 | GDP: 0.1719+/-0.0845 | MI: 0.0000 | MI_sk: 0.2671
+  LAFTR (binned)                     (lam=500.0) | Acc: 0.7861+/-0.0043 | GDP: 0.1168+/-0.0865 | MI: 0.0000 | MI_sk: 0.2929

@@ -1,0 +1,10 @@
+# dataset=communities method=LAFTR (binned) gpu=6 task=regression n=1994 d=99
+  LAFTR (binned)                     (lam=0.01) | MSE: 0.0189+/-0.0015 | GDP: 0.0289+/-0.0053 | MI: 0.0044 | MI_sk: 0.3170
+  LAFTR (binned)                     (lam=0.1) | MSE: 0.0195+/-0.0026 | GDP: 0.0284+/-0.0043 | MI: 0.0000 | MI_sk: 0.4614
+  LAFTR (binned)                     (lam=0.5) | MSE: 0.0221+/-0.0054 | GDP: 0.0258+/-0.0051 | MI: 0.0000 | MI_sk: 0.4528
+  LAFTR (binned)                     (lam=1.0) | MSE: 0.0205+/-0.0028 | GDP: 0.0308+/-0.0052 | MI: 0.0000 | MI_sk: 0.4057
+  LAFTR (binned)                     (lam=5.0) | MSE: 0.0219+/-0.0026 | GDP: 0.0341+/-0.0101 | MI: 0.0000 | MI_sk: 0.4692
+  LAFTR (binned)                     (lam=10.0) | MSE: 0.0229+/-0.0021 | GDP: 0.0389+/-0.0081 | MI: 0.0000 | MI_sk: 0.4206
+  LAFTR (binned)                     (lam=50.0) | MSE: 0.0250+/-0.0013 | GDP: 0.0343+/-0.0090 | MI: 0.0000 | MI_sk: 0.2533
+  LAFTR (binned)                     (lam=100.0) | MSE: 0.0290+/-0.0036 | GDP: 0.0444+/-0.0286 | MI: 0.0000 | MI_sk: 0.2952
+  LAFTR (binned)                     (lam=500.0) | MSE: 0.0293+/-0.0028 | GDP: 0.0450+/-0.0181 | MI: 0.0000 | MI_sk: 0.4081

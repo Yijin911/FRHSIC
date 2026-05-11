@@ -1,0 +1,2 @@
+# dataset=meps method=Unfair gpu=0 task=classification n=13283 d=19
+  Unfair                             (lam=0.0) | Acc: 0.8041+/-0.0039 | GDP: 0.6263+/-0.0165 | MI: 0.2258 | MI_sk: 0.4626

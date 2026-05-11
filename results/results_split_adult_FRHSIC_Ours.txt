@@ -1,0 +1,10 @@
+# dataset=adult method=FRHSIC (Ours) gpu=1 task=classification n=32561 d=107
+  FRHSIC (Ours)                      (lam=0.01) | Acc: 0.8485+/-0.0021 | GDP: 0.7553+/-0.0373 | MI: 0.0556 | MI_sk: 0.2689
+  FRHSIC (Ours)                      (lam=0.1) | Acc: 0.8497+/-0.0030 | GDP: 0.7575+/-0.0318 | MI: 0.0195 | MI_sk: 0.2673
+  FRHSIC (Ours)                      (lam=0.5) | Acc: 0.8485+/-0.0026 | GDP: 0.7332+/-0.0274 | MI: 0.0106 | MI_sk: 0.2659
+  FRHSIC (Ours)                      (lam=1.0) | Acc: 0.8487+/-0.0026 | GDP: 0.7077+/-0.0256 | MI: 0.0098 | MI_sk: 0.2559
+  FRHSIC (Ours)                      (lam=5.0) | Acc: 0.8485+/-0.0038 | GDP: 0.6051+/-0.0248 | MI: 0.0982 | MI_sk: 0.1870
+  FRHSIC (Ours)                      (lam=10.0) | Acc: 0.8478+/-0.0021 | GDP: 0.5210+/-0.0296 | MI: 0.1387 | MI_sk: 0.1656
+  FRHSIC (Ours)                      (lam=50.0) | Acc: 0.8454+/-0.0038 | GDP: 0.2318+/-0.0288 | MI: 0.0686 | MI_sk: 0.1287
+  FRHSIC (Ours)                      (lam=100.0) | Acc: 0.8034+/-0.0054 | GDP: 0.1174+/-0.0248 | MI: 0.0355 | MI_sk: 0.1150
+  FRHSIC (Ours)                      (lam=500.0) | Acc: 0.7583+/-0.0033 | GDP: 0.0002+/-0.0001 | MI: 0.0814 | MI_sk: 0.1378

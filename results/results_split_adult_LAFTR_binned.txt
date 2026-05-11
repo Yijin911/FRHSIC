@@ -1,0 +1,10 @@
+# dataset=adult method=LAFTR (binned) gpu=6 task=classification n=32561 d=107
+  LAFTR (binned)                     (lam=0.01) | Acc: 0.8484+/-0.0029 | GDP: 0.7422+/-0.0468 | MI: 0.0037 | MI_sk: 0.2525
+  LAFTR (binned)                     (lam=0.1) | Acc: 0.8476+/-0.0021 | GDP: 0.6120+/-0.0653 | MI: 0.0000 | MI_sk: 0.2164
+  LAFTR (binned)                     (lam=0.5) | Acc: 0.8473+/-0.0023 | GDP: 0.4989+/-0.0735 | MI: 0.0000 | MI_sk: 0.1650
+  LAFTR (binned)                     (lam=1.0) | Acc: 0.8420+/-0.0029 | GDP: 0.3852+/-0.0422 | MI: 0.0000 | MI_sk: 0.1619
+  LAFTR (binned)                     (lam=5.0) | Acc: 0.8109+/-0.0156 | GDP: 0.2941+/-0.0638 | MI: 0.0000 | MI_sk: 0.1717
+  LAFTR (binned)                     (lam=10.0) | Acc: 0.8474+/-0.0043 | GDP: 0.5011+/-0.0807 | MI: 0.0000 | MI_sk: 0.1598
+  LAFTR (binned)                     (lam=50.0) | Acc: 0.8439+/-0.0041 | GDP: 0.5739+/-0.1153 | MI: 0.0000 | MI_sk: 0.1555
+  LAFTR (binned)                     (lam=100.0) | Acc: 0.8472+/-0.0037 | GDP: 0.6822+/-0.0890 | MI: 0.0000 | MI_sk: 0.1606
+  LAFTR (binned)                     (lam=500.0) | Acc: 0.8279+/-0.0146 | GDP: 0.3002+/-0.0806 | MI: 0.0000 | MI_sk: 0.1696

@@ -1,0 +1,10 @@
+# dataset=meps method=MMD (binned) gpu=2 task=classification n=13283 d=19
+  MMD (binned)                       (lam=0.01) | Acc: 0.8018+/-0.0050 | GDP: 0.6096+/-0.0102 | MI: 0.2597 | MI_sk: 0.4254
+  MMD (binned)                       (lam=0.1) | Acc: 0.8011+/-0.0049 | GDP: 0.5451+/-0.0140 | MI: 0.1961 | MI_sk: 0.4065
+  MMD (binned)                       (lam=0.5) | Acc: 0.8000+/-0.0052 | GDP: 0.4601+/-0.0166 | MI: 0.0935 | MI_sk: 0.3851
+  MMD (binned)                       (lam=1.0) | Acc: 0.8001+/-0.0050 | GDP: 0.4075+/-0.0110 | MI: 0.0601 | MI_sk: 0.3746
+  MMD (binned)                       (lam=5.0) | Acc: 0.7925+/-0.0046 | GDP: 0.1637+/-0.0205 | MI: 0.0007 | MI_sk: 0.3000
+  MMD (binned)                       (lam=10.0) | Acc: 0.7850+/-0.0047 | GDP: 0.0533+/-0.0119 | MI: 0.0000 | MI_sk: 0.2813
+  MMD (binned)                       (lam=50.0) | Acc: 0.7839+/-0.0047 | GDP: 0.0003+/-0.0001 | MI: 0.1291 | MI_sk: 0.2996
+  MMD (binned)                       (lam=100.0) | Acc: 0.7839+/-0.0047 | GDP: 0.0004+/-0.0002 | MI: 0.1112 | MI_sk: 0.3037
+  MMD (binned)                       (lam=500.0) | Acc: 0.7839+/-0.0047 | GDP: 0.0001+/-0.0000 | MI: 0.1280 | MI_sk: 0.2935

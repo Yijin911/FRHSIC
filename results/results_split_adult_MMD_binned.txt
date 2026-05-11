@@ -1,0 +1,10 @@
+# dataset=adult method=MMD (binned) gpu=5 task=classification n=32561 d=107
+  MMD (binned)                       (lam=0.01) | Acc: 0.8494+/-0.0014 | GDP: 0.6104+/-0.0207 | MI: 0.1866 | MI_sk: 0.2311
+  MMD (binned)                       (lam=0.1) | Acc: 0.8489+/-0.0028 | GDP: 0.5186+/-0.0352 | MI: 0.1538 | MI_sk: 0.2345
+  MMD (binned)                       (lam=0.5) | Acc: 0.8498+/-0.0033 | GDP: 0.4207+/-0.0355 | MI: 0.0532 | MI_sk: 0.2423
+  MMD (binned)                       (lam=1.0) | Acc: 0.8492+/-0.0029 | GDP: 0.3932+/-0.0383 | MI: 0.0742 | MI_sk: 0.2485
+  MMD (binned)                       (lam=5.0) | Acc: 0.8491+/-0.0027 | GDP: 0.3119+/-0.0518 | MI: 0.1206 | MI_sk: 0.2428
+  MMD (binned)                       (lam=10.0) | Acc: 0.8482+/-0.0029 | GDP: 0.2572+/-0.0393 | MI: 0.1325 | MI_sk: 0.2545
+  MMD (binned)                       (lam=50.0) | Acc: 0.8467+/-0.0035 | GDP: 0.1255+/-0.0274 | MI: 0.1469 | MI_sk: 0.2510
+  MMD (binned)                       (lam=100.0) | Acc: 0.8266+/-0.0156 | GDP: 0.0687+/-0.0208 | MI: 0.1185 | MI_sk: 0.2157
+  MMD (binned)                       (lam=500.0) | Acc: 0.7583+/-0.0033 | GDP: 0.0001+/-0.0001 | MI: 0.0568 | MI_sk: 0.1446

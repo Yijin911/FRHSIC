@@ -1,0 +1,10 @@
+# dataset=compas method=MMD (binned) gpu=5 task=classification n=6172 d=16
+  MMD (binned)                       (lam=0.01) | Acc: 0.6531+/-0.0140 | GDP: 0.1250+/-0.0290 | MI: 0.0000 | MI_sk: 0.2692
+  MMD (binned)                       (lam=0.1) | Acc: 0.6554+/-0.0138 | GDP: 0.1216+/-0.0317 | MI: 0.0000 | MI_sk: 0.2588
+  MMD (binned)                       (lam=0.5) | Acc: 0.6521+/-0.0132 | GDP: 0.1155+/-0.0319 | MI: 0.0000 | MI_sk: 0.2663
+  MMD (binned)                       (lam=1.0) | Acc: 0.6526+/-0.0123 | GDP: 0.1085+/-0.0289 | MI: 0.0000 | MI_sk: 0.2564
+  MMD (binned)                       (lam=5.0) | Acc: 0.6507+/-0.0123 | GDP: 0.0822+/-0.0216 | MI: 0.0000 | MI_sk: 0.2498
+  MMD (binned)                       (lam=10.0) | Acc: 0.6465+/-0.0145 | GDP: 0.0614+/-0.0196 | MI: 0.0000 | MI_sk: 0.2513
+  MMD (binned)                       (lam=50.0) | Acc: 0.5435+/-0.0105 | GDP: 0.0026+/-0.0007 | MI: 0.0000 | MI_sk: 0.2459
+  MMD (binned)                       (lam=100.0) | Acc: 0.5406+/-0.0095 | GDP: 0.0004+/-0.0001 | MI: 0.0000 | MI_sk: 0.2465
+  MMD (binned)                       (lam=500.0) | Acc: 0.5406+/-0.0095 | GDP: 0.0001+/-0.0000 | MI: 0.0000 | MI_sk: 0.2380

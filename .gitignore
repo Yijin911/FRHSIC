@@ -1,16 +1,28 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.venv/
+venv/
+
+# macOS
 .DS_Store
+
+# Jupyter
 .ipynb_checkpoints/
+
+# LaTeX build artifacts
 *.aux
 *.log
 *.bbl
 *.blg
 *.out
-*.toc
 *.synctex.gz
-results_*.txt
-DONE.txt
-.venv/
-venv/
+*.fdb_latexmk
+*.fls
+*.thm
+*.toc
+*.lof
+*.lot
+texput.log
