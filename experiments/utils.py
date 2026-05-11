@@ -57,15 +57,26 @@ def median_heuristic(X):
 # ──────────────────────────────────────────────
 # HSIC
 # ──────────────────────────────────────────────
+def _double_center(M):
+    """Double-center a square matrix in O(n^2) via explicit row/column mean subtraction.
+    Mathematically equivalent to H @ M @ H where H = I - (1/n) * 1 1^T, but avoids the O(n^3) matmul."""
+    rm = M.mean(dim=1, keepdim=True)
+    cm = M.mean(dim=0, keepdim=True)
+    gm = M.mean()
+    return M - rm - cm + gm
+
+
 def hsic_biased(Z, S, sigma_z=1.0, sigma_s=1.0, kernel_z="gaussian", kernel_s="gaussian"):
-    """Biased HSIC estimator: (1/n^2) tr(KHLH)."""
+    """Biased HSIC estimator: (1/n^2) tr(KHLH).
+    Uses explicit double centering (O(n^2)) instead of the H @ K @ H triple-matmul (O(n^3))."""
     n = Z.shape[0]
     kfn_z = KERNELS[kernel_z]
     kfn_s = KERNELS[kernel_s]
     K = kfn_z(Z, Z, sigma_z)
     L = kfn_s(S.unsqueeze(1), S.unsqueeze(1), sigma_s)
-    H = torch.eye(n, device=Z.device) - 1.0 / n
-    return (H @ K @ H * (H @ L @ H)).sum() / (n ** 2)
+    Kc = _double_center(K)
+    Lc = _double_center(L)
+    return (Kc * Lc).sum() / (n ** 2)
 
 
 def hsic_test_threshold(Z, S, sigma_z=1.0, sigma_s=1.0, alpha=0.05):
@@ -239,17 +250,18 @@ def eipm_weighted(Z, S, sigma_z=1.0, sigma_s=0.5):
 # Reg-GDP baseline (Jiang et al. 2022)
 # ──────────────────────────────────────────────
 def reg_gdp_loss(Z, S, predictor, bandwidth=0.2, n_grid=30):
-    """GDP regularization loss (differentiable approximation)."""
+    """GDP regularization loss (differentiable approximation), fully vectorized over the s-grid.
+    Replaces the per-grid-point Python loop with a single (batch x n_grid) tensor computation."""
     fZ = predictor(Z).squeeze()
     global_mean = fZ.mean()
     s_grid = torch.linspace(S.min().item(), S.max().item(), n_grid, device=Z.device)
-    gdp = torch.tensor(0.0, device=Z.device)
-    for s in s_grid:
-        weights = torch.exp(-((S - s) ** 2) / (2 * bandwidth ** 2))
-        weights = weights / (weights.sum() + 1e-10)
-        conditional_mean = (weights * fZ).sum()
-        gdp = gdp + torch.abs(conditional_mean - global_mean)
-    return gdp / n_grid
+    # weights[i, g] = exp(-(S_i - s_grid_g)^2 / (2 * bandwidth^2))
+    diffs = S.unsqueeze(1) - s_grid.unsqueeze(0)  # (batch, n_grid)
+    weights = torch.exp(-(diffs ** 2) / (2.0 * bandwidth ** 2))
+    weights = weights / (weights.sum(dim=0, keepdim=True) + 1e-10)
+    # Conditional mean at each grid point: (batch,) @ (batch, n_grid) -> (n_grid,)
+    conditional_means = (weights * fZ.unsqueeze(1)).sum(dim=0)
+    return torch.abs(conditional_means - global_mean).mean()
 
 
 # ──────────────────────────────────────────────

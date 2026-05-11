@@ -336,11 +336,27 @@ DATASETS = {
 # ──────────────────────────────────────────────
 # Training methods
 # ──────────────────────────────────────────────
+
+def _gpu_batch_iter(X_g, S_g, Y_g, batch_size, shuffle=True):
+    """Iterate over (X, S, Y) in mini-batches with all data resident on GPU.
+
+    Replaces DataLoader+TensorDataset where the dataset fits in GPU memory.
+    Avoids per-batch host->device transfers (the main overhead at n~30k).
+    """
+    n = X_g.shape[0]
+    if shuffle:
+        perm = torch.randperm(n, device=X_g.device)
+    else:
+        perm = torch.arange(n, device=X_g.device)
+    for start in range(0, n, batch_size):
+        idx = perm[start:start + batch_size]
+        yield X_g[idx], S_g[idx], Y_g[idx]
+
+
 def train_frhsic(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_SIZE, lr=1e-3,
                   adaptive_bandwidth=True):
     """Our method: FRHSIC. Uses median heuristic bandwidth by default."""
-    dataset = TensorDataset(X, S, Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    X_g, S_g, Y_g = X.to(DEVICE), S.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -350,14 +366,12 @@ def train_frhsic(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATC
     # Pre-compute sigma_s from data (fixed throughout training)
     if adaptive_bandwidth:
         with torch.no_grad():
-            S_sample = S[:min(1000, len(S))].unsqueeze(1).to(DEVICE)
-            sigma_s = median_heuristic(S_sample)
+            sigma_s = median_heuristic(S_g[:min(1000, len(S_g))].unsqueeze(1))
     else:
         sigma_s = KERNEL_SIGMA
 
     for epoch in range(epochs):
-        for X_b, S_b, Y_b in loader:
-            X_b, S_b, Y_b = X_b.to(DEVICE), S_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, S_b, Y_b in _gpu_batch_iter(X_g, S_g, Y_g, batch_size):
             Z_b = encoder(X_b)
 
             # Adaptive sigma_z: recompute periodically from current representations
@@ -377,8 +391,7 @@ def train_frhsic(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATC
 
 def train_reg_gdp(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_SIZE, lr=1e-3):
     """Baseline: Reg-GDP (Jiang et al. 2022)."""
-    dataset = TensorDataset(X, S, Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    X_g, S_g, Y_g = X.to(DEVICE), S.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -386,8 +399,7 @@ def train_reg_gdp(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BAT
     loss_fn = nn.BCEWithLogitsLoss() if task == "classification" else nn.MSELoss()
 
     for _ in range(epochs):
-        for X_b, S_b, Y_b in loader:
-            X_b, S_b, Y_b = X_b.to(DEVICE), S_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, S_b, Y_b in _gpu_batch_iter(X_g, S_g, Y_g, batch_size):
             Z_b = encoder(X_b)
             loss = loss_fn(predictor(Z_b).squeeze(), Y_b) + lam * reg_gdp_loss(Z_b, S_b, predictor)
             opt.zero_grad()
@@ -398,9 +410,13 @@ def train_reg_gdp(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BAT
 
 
 def train_frem(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_SIZE, lr=1e-3):
-    """Baseline: FREM (Kong et al. 2025) — weighted EIPM with MMD."""
-    dataset = TensorDataset(X, S, Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    """Baseline: FREM (Kong et al. 2025) — weighted EIPM with MMD.
+
+    The anchor-loop is vectorized: instead of iterating over anchors and
+    computing scalar w_i @ K @ w_i, we form a (n_anchors, n) weight matrix
+    and compute all per-anchor MMD^2 values in a single batched matmul.
+    """
+    X_g, S_g, Y_g = X.to(DEVICE), S.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -409,32 +425,32 @@ def train_frem(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_
 
     # FREM uses fixed bandwidth gamma for kernel smoothing on S
     # and fixed sigma=1.0 for the MMD kernel on Z
-    gamma = 0.5  # bandwidth for kernel smoothing on S
+    gamma = 0.5
 
     for _ in range(epochs):
-        for X_b, S_b, Y_b in loader:
-            X_b, S_b, Y_b = X_b.to(DEVICE), S_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, S_b, Y_b in _gpu_batch_iter(X_g, S_g, Y_g, batch_size):
             Z_b = encoder(X_b)
             loss_pred = loss_fn(predictor(Z_b).squeeze(), Y_b)
 
             n = Z_b.shape[0]
-            K = gaussian_kernel(Z_b, Z_b, KERNEL_SIGMA)
-            W = gaussian_kernel(S_b.unsqueeze(1), S_b.unsqueeze(1), gamma)
-            W_loo = W.clone()
-            W_loo.fill_diagonal_(0)
+            K = gaussian_kernel(Z_b, Z_b, KERNEL_SIGMA)            # (n, n)
+            W = gaussian_kernel(S_b.unsqueeze(1), S_b.unsqueeze(1), gamma)  # (n, n)
+            W_loo = W - torch.diag_embed(torch.diagonal(W))
             W_loo = W_loo / (W_loo.sum(dim=1, keepdim=True) + 1e-10)
 
-            # Weighted EIPM: subsample anchor points for tractability
-            uniform = torch.ones(n, device=DEVICE) / n
-            oneK1 = uniform @ K @ uniform
-            eipm = torch.tensor(0.0, device=DEVICE)
+            uniform = torch.full((n,), 1.0 / n, device=DEVICE)
+            oneK1 = uniform @ K @ uniform                          # scalar
+            uniform_K = uniform @ K                                # (n,)
+
             n_anchors = min(n, 32)
             anchor_idx = torch.randperm(n, device=DEVICE)[:n_anchors]
-            for i in anchor_idx:
-                w_i = W_loo[i]
-                mmd2 = w_i @ K @ w_i - 2 * (w_i @ K @ uniform) + oneK1
-                eipm = eipm + torch.sqrt(torch.clamp(mmd2, min=1e-10))
-            eipm = eipm / n_anchors
+            W_anchors = W_loo[anchor_idx]                          # (n_anchors, n)
+            # term1[i] = w_i @ K @ w_i, computed as diag(W_anchors @ K @ W_anchors.T)
+            WK = W_anchors @ K                                     # (n_anchors, n)
+            term1 = (WK * W_anchors).sum(dim=1)                    # (n_anchors,)
+            term2 = (W_anchors @ uniform_K)                        # (n_anchors,)
+            mmd2 = term1 - 2.0 * term2 + oneK1
+            eipm = torch.sqrt(torch.clamp(mmd2, min=1e-10)).mean()
 
             loss = loss_pred + lam * eipm
             opt.zero_grad()
@@ -446,8 +462,7 @@ def train_frem(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_
 
 def train_adv(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_SIZE, lr=1e-3):
     """Baseline: ADV — adversarial approach for continuous S (Zhang et al. 2018)."""
-    dataset = TensorDataset(X, S, Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    X_g, S_g, Y_g = X.to(DEVICE), S.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -459,8 +474,7 @@ def train_adv(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_S
     mse = nn.MSELoss()
 
     for _ in range(epochs):
-        for X_b, S_b, Y_b in loader:
-            X_b, S_b, Y_b = X_b.to(DEVICE), S_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, S_b, Y_b in _gpu_batch_iter(X_g, S_g, Y_g, batch_size):
             Z_b = encoder(X_b)
 
             # Adversary step: predict S from Z
@@ -485,13 +499,11 @@ def train_adv(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_S
 
 def train_mmd_binned(X, S, Y, lam, task, n_bins=10, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_SIZE, lr=1e-3):
     """Baseline: MMD with binned S (Deka & Sutherland 2023)."""
-    # Bin S into quantiles
     S_np = S.numpy()
     bins = np.quantile(S_np, np.linspace(0, 1, n_bins + 1))
-    S_binned = np.digitize(S_np, bins[1:-1])
+    S_binned = torch.tensor(np.digitize(S_np, bins[1:-1]), dtype=torch.long)
 
-    dataset = TensorDataset(X, torch.tensor(S_binned, dtype=torch.long), Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    X_g, Sb_g, Y_g = X.to(DEVICE), S_binned.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -499,12 +511,10 @@ def train_mmd_binned(X, S, Y, lam, task, n_bins=10, z_dim=Z_DIM, epochs=EPOCHS, 
     loss_fn = nn.BCEWithLogitsLoss() if task == "classification" else nn.MSELoss()
 
     for _ in range(epochs):
-        for X_b, Sb_b, Y_b in loader:
-            X_b, Sb_b, Y_b = X_b.to(DEVICE), Sb_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, Sb_b, Y_b in _gpu_batch_iter(X_g, Sb_g, Y_g, batch_size):
             Z_b = encoder(X_b)
             loss_pred = loss_fn(predictor(Z_b).squeeze(), Y_b)
 
-            # MMD between each bin and overall
             mmd_total = torch.tensor(0.0, device=DEVICE)
             mu_all = Z_b.mean(0)
             for b in range(n_bins):
@@ -527,8 +537,7 @@ def train_laftr(X, S, Y, lam, task, n_bins=4, z_dim=Z_DIM, epochs=EPOCHS, batch_
     bins = np.quantile(S_np, np.linspace(0, 1, n_bins + 1))
     S_binned = torch.tensor(np.digitize(S_np, bins[1:-1]), dtype=torch.long)
 
-    dataset = TensorDataset(X, S_binned, Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    X_g, Sb_g, Y_g = X.to(DEVICE), S_binned.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -542,18 +551,15 @@ def train_laftr(X, S, Y, lam, task, n_bins=4, z_dim=Z_DIM, epochs=EPOCHS, batch_
     ce = nn.CrossEntropyLoss()
 
     for _ in range(epochs):
-        for X_b, Sb_b, Y_b in loader:
-            X_b, Sb_b, Y_b = X_b.to(DEVICE), Sb_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, Sb_b, Y_b in _gpu_batch_iter(X_g, Sb_g, Y_g, batch_size):
             Z_b = encoder(X_b)
 
-            # Adversary step
             adv_logits = adversary_mc(Z_b.detach())
             loss_adv = ce(adv_logits, Sb_b)
             opt_adv.zero_grad()
             loss_adv.backward()
             opt_adv.step()
 
-            # Encoder + predictor step
             Z_b = encoder(X_b)
             loss_pred = loss_fn(predictor(Z_b).squeeze(), Y_b)
             adv_logits = adversary_mc(Z_b)
@@ -568,8 +574,7 @@ def train_laftr(X, S, Y, lam, task, n_bins=4, z_dim=Z_DIM, epochs=EPOCHS, batch_
 
 def train_dcor(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_SIZE, lr=1e-3):
     """Baseline: Distance Covariance regularizer (Szekely et al. 2007)."""
-    dataset = TensorDataset(X, S, Y)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    X_g, S_g, Y_g = X.to(DEVICE), S.to(DEVICE), Y.to(DEVICE)
 
     encoder = Encoder(X.shape[1], z_dim=z_dim).to(DEVICE)
     predictor = Predictor(z_dim=z_dim).to(DEVICE)
@@ -577,8 +582,7 @@ def train_dcor(X, S, Y, lam, task, z_dim=Z_DIM, epochs=EPOCHS, batch_size=BATCH_
     loss_fn = nn.BCEWithLogitsLoss() if task == "classification" else nn.MSELoss()
 
     for _ in range(epochs):
-        for X_b, S_b, Y_b in loader:
-            X_b, S_b, Y_b = X_b.to(DEVICE), S_b.to(DEVICE), Y_b.to(DEVICE)
+        for X_b, S_b, Y_b in _gpu_batch_iter(X_g, S_g, Y_g, batch_size):
             Z_b = encoder(X_b)
             loss = loss_fn(predictor(Z_b).squeeze(), Y_b) + lam * dcov_squared(Z_b, S_b)
             opt.zero_grad()
