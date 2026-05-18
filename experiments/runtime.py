@@ -172,41 +172,57 @@ def run_runtime_experiment(replot=False):
         for m in payload["results"]
     }
 
-    # Plot
-    # figsize width = 0.6 * W_text, where W_text = 370.38374pt / 72.27pt/in = 5.124"
-    W_text = 5.124
-    fig_w = 0.6 * W_text   # 3.074"
-    fig_h = fig_w * 0.82   # 2.521"
-    fig, ax = plt.subplots(figsize=(fig_w, fig_h))
-    colors = {"FRHSIC": "tab:red", "FREM": "tab:green", "Reg-GDP": "tab:blue"}
-    markers = {"FRHSIC": "o", "FREM": "s", "Reg-GDP": "^"}
+    # Plot (publication style)
+    from plot_style import set_pub_style, COLORS, MARKERS, LINESTYLE, LBL_TIME, despine
+    set_pub_style()
+    W_text = 5.124  # \textwidth in inches
+    fig_w = 0.60 * W_text          # modest single-panel size
+    fig_h = fig_w * 0.74
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h),
+                           constrained_layout=True)
+    # runtime.py uses short method keys; map them to the shared palette.
+    KEY = {"FRHSIC": "FRHSIC (Ours)", "FREM": "FREM", "Reg-GDP": "Reg-GDP"}
 
-    for method in results:
-        means = [np.mean(results[method][n]) for n in sample_sizes]
-        stds = [np.std(results[method][n]) for n in sample_sizes]
-        ax.errorbar(
-            sample_sizes, means, yerr=stds,
-            marker=markers[method], color=colors[method],
-            linewidth=1.0, markersize=3.5, capsize=2, label=method,
+    handles, labels = [], []
+    for method in ["FRHSIC", "FREM", "Reg-GDP"]:
+        if method not in results:
+            continue
+        mk = KEY[method]
+        primary = method == "FRHSIC"
+        m = np.array([np.mean(results[method][n]) for n in sample_sizes])
+        s = np.array([np.std(results[method][n]) for n in sample_sizes])
+        z = 6 if primary else 3
+        # standard deviation as error bars (negligible except FRHSIC
+        # at small n, so caps are clearer than a near-invisible band)
+        h = ax.errorbar(
+            sample_sizes, m, yerr=s,
+            marker=MARKERS[mk], color=COLORS[mk], linestyle=LINESTYLE[mk],
+            linewidth=2.4 if primary else 1.8,
+            markersize=6.0 if primary else 4.5,
+            alpha=1.0 if primary else 0.85, zorder=z,
+            capsize=2.5, label=method,
         )
+        handles.append(h)
+        labels.append(method)
 
-    ax.set_xlabel("Sample size $n$", fontsize=10)
-    ax.set_ylabel("Time per epoch (seconds)", fontsize=10)
-    ax.tick_params(axis="both", labelsize=9)
-    ax.grid(True, alpha=0.3)
     ax.set_xscale("log")
     ax.set_yscale("log")
+    ax.set_xlabel(r"Sample size $n$ (log scale)")
+    ax.set_ylabel("Time per epoch (s)")
+    ax.grid(True, alpha=0.3, which="both")
+    despine(ax)
 
-    # Legend below the plot
-    handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, -0.02),
-               ncol=min(len(labels), 5), fontsize=9, frameon=False)
-    fig.tight_layout()
-    fig.subplots_adjust(bottom=0.28)
+    # Legend outside, just below the x-label (constrained_layout
+    # handles the axis-label spacing; tight bbox captures the legend).
+    leg = fig.legend(handles, labels, loc="upper center",
+                     bbox_to_anchor=(0.5, -0.03), ncol=3, frameon=False,
+                     handlelength=2.0, columnspacing=1.4)
 
-    fig.savefig(os.path.join(RESULTS_DIR, "runtime_comparison.pdf"), bbox_inches="tight")
-    fig.savefig(os.path.join(RESULTS_DIR, "runtime_comparison.png"), dpi=150, bbox_inches="tight")
-    print(f"\nRuntime figure saved to {RESULTS_DIR}/runtime_comparison.{{pdf,png}}")
+    fig.savefig(os.path.join(RESULTS_DIR, "runtime_scaling.pdf"),
+                bbox_inches="tight", bbox_extra_artists=[leg])
+    fig.savefig(os.path.join(RESULTS_DIR, "runtime_scaling.png"),
+                dpi=300, bbox_inches="tight", bbox_extra_artists=[leg])
+    print(f"\nRuntime figure saved to {RESULTS_DIR}/runtime_scaling.{{pdf,png}}")
 
 
 if __name__ == "__main__":

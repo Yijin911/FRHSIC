@@ -125,11 +125,12 @@ def run_convergence_experiment(replot=False):
     print(f"  HSIC: |error| ≈ n^{slope_hsic:.3f}  (theoretical: -1/2 = -0.500)")
     print(f"  EIPM: |error| ≈ n^{slope_eipm:.3f}  (theoretical: -2/5 = -0.400)")
 
-    # Plot
-    # figsize width = 0.55 * W_text, where W_text = 370.38374pt / 72.27pt/in = 5.124"
-    W_text = 5.124
-    fig_w = 0.55 * W_text   # 2.818"
-    fig_h = fig_w * 0.82    # 2.311"
+    # Plot (publication style)
+    from plot_style import set_pub_style, COLORS, despine
+    set_pub_style()
+    W_text = 5.124  # \textwidth in inches (370.38374pt / 72.27)
+    fig_w = 0.80 * W_text
+    fig_h = fig_w * 0.70
     fig, ax = plt.subplots(figsize=(fig_w, fig_h))
 
     hsic_means = [np.mean(hsic_errors[n]) for n in sample_sizes]
@@ -137,40 +138,49 @@ def run_convergence_experiment(replot=False):
     eipm_means = [np.mean(eipm_errors[n]) for n in sample_sizes]
     eipm_stds = [np.std(eipm_errors[n]) for n in sample_sizes]
 
+    # Empirical curves are visually primary (thick, large markers).
     ax.errorbar(
         sample_sizes, hsic_means, yerr=hsic_stds,
-        marker="o", color="tab:red", linewidth=1.0, markersize=3.5, capsize=2,
-        label=f"HSIC (slope = {slope_hsic:.2f})",
+        marker="o", color=COLORS["FRHSIC (Ours)"], linewidth=2.4,
+        markersize=6.5, capsize=2.5, zorder=6, label="HSIC",
     )
     ax.errorbar(
         sample_sizes, eipm_means, yerr=eipm_stds,
-        marker="s", color="tab:green", linewidth=1.0, markersize=3.5, capsize=2,
-        label=f"EIPM (slope = {slope_eipm:.2f})",
+        marker="s", color=COLORS["FREM"], linewidth=2.0,
+        markersize=5.5, capsize=2.5, zorder=5, label="EIPM",
     )
 
-    # Reference lines
+    # Theoretical reference lines: thin, dashed, neutral gray (secondary).
     n_ref = np.array(sample_sizes, dtype=float)
     c_hsic = hsic_means[0] * sample_sizes[0] ** 0.5
-    ax.plot(n_ref, c_hsic / np.sqrt(n_ref), "--", color="0.5", linewidth=0.8, label=r"$n^{-1/2}$ (theory)")
+    ax.plot(n_ref, c_hsic / np.sqrt(n_ref), linestyle="--", color="0.55",
+            linewidth=1.0, zorder=2, label=r"reference $n^{-1/2}$")
     c_eipm = eipm_means[0] * sample_sizes[0] ** 0.4
-    ax.plot(n_ref, c_eipm / n_ref ** 0.4, ":", color="0.5", linewidth=0.8, label=r"$n^{-2/5}$ (theory)")
+    ax.plot(n_ref, c_eipm / n_ref ** 0.4, linestyle=(0, (1, 1)), color="0.55",
+            linewidth=1.0, zorder=2, label=r"reference $n^{-2/5}$")
 
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlabel("Sample size $n$", fontsize=10)
-    ax.set_ylabel("Absolute estimation error", fontsize=10)
-    ax.tick_params(axis="both", labelsize=9)
+    ax.set_xlabel(r"Sample size $n$ (log scale)")
+    # Both axes are log (stated on the x-label and in the caption), so
+    # the y-label does not repeat it.
+    ax.set_ylabel("Absolute estimation error")
     ax.grid(True, alpha=0.3, which="both")
+    despine(ax)  # remove the top/right frame
 
-    # Legend below the plot
+    # Legend outside, centered below the panel (no frame). Slopes are
+    # reported in the caption rather than annotated on the plot.
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, -0.02),
-               ncol=min(len(labels), 4), fontsize=9, frameon=False)
-    fig.tight_layout()
-    fig.subplots_adjust(bottom=0.30)
+    fig.subplots_adjust(left=0.12, right=0.97, top=0.96, bottom=0.26)
+    leg = fig.legend(handles, labels, loc="lower center",
+                     bbox_to_anchor=(0.5, 0.0), ncol=4, frameon=False,
+                     handlelength=1.8, columnspacing=1.4)
 
-    fig.savefig(os.path.join(RESULTS_DIR, "convergence_rate.pdf"), bbox_inches="tight")
-    fig.savefig(os.path.join(RESULTS_DIR, "convergence_rate.png"), dpi=150, bbox_inches="tight")
+    fig.savefig(os.path.join(RESULTS_DIR, "convergence_rate.pdf"),
+                bbox_inches="tight", bbox_extra_artists=[leg])
+    fig.savefig(os.path.join(RESULTS_DIR, "convergence_rate.png"),
+                dpi=300, bbox_inches="tight", bbox_extra_artists=[leg])
+    print(f"  fitted slopes: HSIC={slope_hsic:.3f}, EIPM={slope_eipm:.3f}")
     print(f"\nFigure saved to {RESULTS_DIR}/convergence_rate.{{pdf,png}}")
 
 
