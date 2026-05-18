@@ -11,6 +11,8 @@ multi-d S directly, so we can sweep dim(S) without monkey-patching real_data.py.
 
 import os
 import time
+import json
+import argparse
 import numpy as np
 import torch
 import torch.nn as nn
@@ -32,6 +34,11 @@ SIGMA_S = 1.0     # FRHSIC HSIC bandwidth on S (fixed, no median heuristic)
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+# Persisted raw numeric results so the figure can be restyled later
+# (python highdim_S.py --replot) without re-running the experiment.
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "results")
+os.makedirs(DATA_DIR, exist_ok=True)
+CACHE = os.path.join(DATA_DIR, "highdim_S_data.json")
 
 
 def hsic_md(Z, S, sigma_z=KERNEL_SIGMA, sigma_s=SIGMA_S):
@@ -113,8 +120,7 @@ def build_S(df_X_full, d, rng):
     return S_scaled
 
 
-def main():
-    torch.manual_seed(SEED); np.random.seed(SEED)
+def compute_results():
     rng = np.random.RandomState(SEED)
     X_np, _, Y_np, _, _ = load_adult()  # X already includes age + cap-gain etc as numeric
     # Subsample
@@ -137,10 +143,32 @@ def main():
             t0 = time.perf_counter()
             final_loss = fn(X_t, S_t, Y_t)
             t = time.perf_counter() - t0
-            rows.append({"d": d, "method": method, "time_s": t,
-                         "time_per_epoch": t / EPOCHS, "final_loss": final_loss})
+            rows.append({"d": int(d), "method": method, "time_s": float(t),
+                         "time_per_epoch": float(t / EPOCHS),
+                         "final_loss": float(final_loss)})
             print(f"d={d} {method:8s} total={t:7.2f}s "
                   f"per-epoch={t/EPOCHS:6.3f}s final_loss={final_loss:.4f}")
+
+    payload = {"rows": rows}
+    with open(CACHE, "w") as f:
+        json.dump(payload, f, indent=2)
+    print(f"Saved raw results to {CACHE}")
+    return payload
+
+
+def run_highdim_S_experiment(replot=False):
+    if replot:
+        if not os.path.exists(CACHE):
+            raise FileNotFoundError(
+                f"{CACHE} not found; run without --replot once to generate it."
+            )
+        with open(CACHE) as f:
+            payload = json.load(f)
+        print(f"Loaded cached results from {CACHE} (no re-run).")
+    else:
+        payload = compute_results()
+
+    rows = payload["rows"]
 
     # Plot
     fig, ax = plt.subplots(figsize=(6, 4))
@@ -170,4 +198,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replot", action="store_true",
+        help="Re-draw the figure from cached results without re-running.",
+    )
+    args = parser.parse_args()
+    torch.manual_seed(SEED)
+    np.random.seed(SEED)
+    run_highdim_S_experiment(replot=args.replot)

@@ -1,0 +1,806 @@
+{
+  "alpha_test": 0.05,
+  "all_results": {
+    "adult": {
+      "display_name": "Adult",
+      "task": "classification",
+      "dataset_results": [
+        {
+          "repeat": 0,
+          "selected_lambda": null,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.012401196174323559,
+              "threshold": 0.30767252972432274,
+              "reject": true,
+              "gdp": 0.7804316282272339,
+              "perf": 0.8524053692817688,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.0024684991221874952,
+              "threshold": 0.3251158052469699,
+              "reject": true,
+              "gdp": 0.7058175206184387,
+              "perf": 0.8522006273269653,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.00125868187751621,
+              "threshold": 0.312491023407316,
+              "reject": true,
+              "gdp": 0.6566778421401978,
+              "perf": 0.849334716796875,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0017065639840438962,
+              "threshold": 0.31730272400197723,
+              "reject": true,
+              "gdp": 0.6789093017578125,
+              "perf": 0.8485158681869507,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0009766370058059692,
+              "threshold": 0.3104171985343696,
+              "reject": true,
+              "gdp": 0.641730546951294,
+              "perf": 0.8468782305717468,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0018719900399446487,
+              "threshold": 0.3028701462687885,
+              "reject": true,
+              "gdp": 0.4492079019546509,
+              "perf": 0.8509724140167236,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.004650445654988289,
+              "threshold": 0.31043676847406587,
+              "reject": true,
+              "gdp": 0.34139877557754517,
+              "perf": 0.8501535654067993,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.001899784430861473,
+              "threshold": 0.3135453548744521,
+              "reject": true,
+              "gdp": 0.6951457858085632,
+              "perf": 0.8532241582870483,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.002533630235120654,
+              "threshold": 0.33010954562473044,
+              "reject": true,
+              "gdp": 0.6297079920768738,
+              "perf": 0.8517912030220032,
+              "perf_name": "Acc"
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "selected_lambda": null,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.012445776723325253,
+              "threshold": 0.3146147344485554,
+              "reject": true,
+              "gdp": 0.7566457986831665,
+              "perf": 0.853838324546814,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.0027943041641265154,
+              "threshold": 0.3120914137339865,
+              "reject": true,
+              "gdp": 0.7841063737869263,
+              "perf": 0.8517912030220032,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0011517326347529888,
+              "threshold": 0.3091558484226089,
+              "reject": true,
+              "gdp": 0.7375738620758057,
+              "perf": 0.850358247756958,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0016309714410454035,
+              "threshold": 0.32850251480831283,
+              "reject": true,
+              "gdp": 0.7502194046974182,
+              "perf": 0.8495394587516785,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0008130711503326893,
+              "threshold": 0.3076356879684435,
+              "reject": true,
+              "gdp": 0.5952587723731995,
+              "perf": 0.8431934714317322,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0011478280648589134,
+              "threshold": 0.28969543494731453,
+              "reject": true,
+              "gdp": 0.47028785943984985,
+              "perf": 0.8519959449768066,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.001386914518661797,
+              "threshold": 0.3395248298979148,
+              "reject": true,
+              "gdp": 0.7134211659431458,
+              "perf": 0.849334716796875,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.002919627819210291,
+              "threshold": 0.3117512308751897,
+              "reject": true,
+              "gdp": 0.14066603779792786,
+              "perf": 0.8339815735816956,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.002523193834349513,
+              "threshold": 0.3165575584136076,
+              "reject": true,
+              "gdp": 0.07843730598688126,
+              "perf": 0.8063459992408752,
+              "perf_name": "Acc"
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "selected_lambda": null,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.012926971539855003,
+              "threshold": 0.3146384377879841,
+              "reject": true,
+              "gdp": 0.6963997483253479,
+              "perf": 0.849334716796875,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.002876421669498086,
+              "threshold": 0.2998289010199178,
+              "reject": true,
+              "gdp": 0.6995957493782043,
+              "perf": 0.8431934714317322,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0011559069389477372,
+              "threshold": 0.3164866074125039,
+              "reject": true,
+              "gdp": 0.6201227307319641,
+              "perf": 0.8485158681869507,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0012201679637655616,
+              "threshold": 0.30684746787304656,
+              "reject": true,
+              "gdp": 0.5936325788497925,
+              "perf": 0.8423746228218079,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0017426335252821445,
+              "threshold": 0.29828919660968944,
+              "reject": true,
+              "gdp": 0.5852183699607849,
+              "perf": 0.8519959449768066,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0011551054194569588,
+              "threshold": 0.3131327426416662,
+              "reject": true,
+              "gdp": 0.49300214648246765,
+              "perf": 0.8495394587516785,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.005176831968128681,
+              "threshold": 0.30238206357962655,
+              "reject": true,
+              "gdp": 0.3928705155849457,
+              "perf": 0.8501535654067993,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.0019379619043320417,
+              "threshold": 0.3038097887176651,
+              "reject": true,
+              "gdp": 0.6519364714622498,
+              "perf": 0.8499488234519958,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.001347950892522931,
+              "threshold": 0.30027796331493717,
+              "reject": true,
+              "gdp": 0.021366233006119728,
+              "perf": 0.7936540842056274,
+              "perf_name": "Acc"
+            }
+          ]
+        }
+      ]
+    },
+    "crime": {
+      "display_name": "Crime",
+      "task": "regression",
+      "dataset_results": [
+        {
+          "repeat": 0,
+          "selected_lambda": 50.0,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.003581965109333396,
+              "threshold": 0.32556424337609835,
+              "reject": true,
+              "gdp": 0.022090349346399307,
+              "perf": 2.2468430921435356,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.0017265590140596032,
+              "threshold": 0.32181298387794677,
+              "reject": true,
+              "gdp": 0.023057889193296432,
+              "perf": 2.0979018881917,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0012131979456171393,
+              "threshold": 0.317009375950575,
+              "reject": true,
+              "gdp": 0.01932443678379059,
+              "perf": 2.1444112062454224,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0013376888819038868,
+              "threshold": 0.31651448906648044,
+              "reject": true,
+              "gdp": 0.01787782646715641,
+              "perf": 2.0063474774360657,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0012760479003190994,
+              "threshold": 0.30092239036394647,
+              "reject": true,
+              "gdp": 0.010894954204559326,
+              "perf": 2.1388670429587364,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0012203877558931708,
+              "threshold": 0.29780559048857047,
+              "reject": true,
+              "gdp": 0.00791887380182743,
+              "perf": 2.1776027977466583,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.0007309522479772568,
+              "threshold": 0.3072483703717201,
+              "reject": false,
+              "gdp": 0.0013362562749534845,
+              "perf": 5.0835005939006805,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.0007480565109290183,
+              "threshold": 0.32206197318110347,
+              "reject": false,
+              "gdp": 0.0032335917931050062,
+              "perf": 4.951120540499687,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.0012779512908309698,
+              "threshold": 0.3239390824971575,
+              "reject": true,
+              "gdp": 0.00011376321344869211,
+              "perf": 5.519810318946838,
+              "perf_name": "MSE\u00d7100"
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "selected_lambda": 5.0,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.004204143770039082,
+              "threshold": 0.3191294345429368,
+              "reject": true,
+              "gdp": 0.05040734261274338,
+              "perf": 1.8258756026625633,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.0015117755392566323,
+              "threshold": 0.3146599201293911,
+              "reject": true,
+              "gdp": 0.046463172882795334,
+              "perf": 1.7828583717346191,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0014247952494770288,
+              "threshold": 0.3168588896708914,
+              "reject": true,
+              "gdp": 0.04707447811961174,
+              "perf": 1.80028285831213,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0012314828345552087,
+              "threshold": 0.31579467703844966,
+              "reject": true,
+              "gdp": 0.04444412142038345,
+              "perf": 1.7415419220924377,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0009323406266048551,
+              "threshold": 0.29986587630884953,
+              "reject": false,
+              "gdp": 0.030742214992642403,
+              "perf": 1.9360065460205078,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.000959408120252192,
+              "threshold": 0.2936649915072742,
+              "reject": false,
+              "gdp": 0.027023106813430786,
+              "perf": 1.96275245398283,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.001810009009204805,
+              "threshold": 0.31696658417247064,
+              "reject": true,
+              "gdp": 0.0006227761623449624,
+              "perf": 5.5599212646484375,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.0007637404487468302,
+              "threshold": 0.3242134453328293,
+              "reject": false,
+              "gdp": 0.00021076947450637817,
+              "perf": 5.480143427848816,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.0008390487055294216,
+              "threshold": 0.323709841477009,
+              "reject": false,
+              "gdp": 4.989474837202579e-05,
+              "perf": 5.502338707447052,
+              "perf_name": "MSE\u00d7100"
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "selected_lambda": 500.0,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.00288007827475667,
+              "threshold": 0.3248506851630331,
+              "reject": true,
+              "gdp": 0.029722724109888077,
+              "perf": 1.8062643706798553,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.0015375064685940742,
+              "threshold": 0.3194143327613435,
+              "reject": true,
+              "gdp": 0.02844972535967827,
+              "perf": 1.8050216138362885,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0012957213912159204,
+              "threshold": 0.31356930223806867,
+              "reject": true,
+              "gdp": 0.02787313424050808,
+              "perf": 1.9394557923078537,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0011266563087701797,
+              "threshold": 0.3065271312628635,
+              "reject": true,
+              "gdp": 0.024839119985699654,
+              "perf": 1.7877070233225822,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0010881609050557017,
+              "threshold": 0.2943758062896342,
+              "reject": true,
+              "gdp": 0.019182516261935234,
+              "perf": 1.8562767654657364,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.001150858704932034,
+              "threshold": 0.2881050239183731,
+              "reject": true,
+              "gdp": 0.01167592965066433,
+              "perf": 2.0183393731713295,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.0017141893040388823,
+              "threshold": 0.30856338439414494,
+              "reject": true,
+              "gdp": 0.0016998427454382181,
+              "perf": 4.685200750827789,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.0014666098868474364,
+              "threshold": 0.3255618620130996,
+              "reject": true,
+              "gdp": 0.0001461303181713447,
+              "perf": 5.229070782661438,
+              "perf_name": "MSE\u00d7100"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.0009158487082459033,
+              "threshold": 0.30952002392700306,
+              "reject": false,
+              "gdp": 0.0001203286592499353,
+              "perf": 5.246756970882416,
+              "perf_name": "MSE\u00d7100"
+            }
+          ]
+        }
+      ]
+    },
+    "compas": {
+      "display_name": "COMPAS",
+      "task": "classification",
+      "dataset_results": [
+        {
+          "repeat": 0,
+          "selected_lambda": 100.0,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.0009184116497635841,
+              "threshold": 0.30461787486666975,
+              "reject": true,
+              "gdp": 0.10633496940135956,
+              "perf": 0.6386191844940186,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.0007401560433208942,
+              "threshold": 0.3057037118845512,
+              "reject": true,
+              "gdp": 0.11122632026672363,
+              "perf": 0.6407766938209534,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0007439073524437845,
+              "threshold": 0.3044364588125204,
+              "reject": true,
+              "gdp": 0.11369317770004272,
+              "perf": 0.6364616751670837,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0006351275369524956,
+              "threshold": 0.2950640180360378,
+              "reject": true,
+              "gdp": 0.10449495166540146,
+              "perf": 0.6375404000282288,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0004988257423974574,
+              "threshold": 0.2846786630850031,
+              "reject": true,
+              "gdp": 0.09353642910718918,
+              "perf": 0.6494066715240479,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0003416571125853807,
+              "threshold": 0.304609737103958,
+              "reject": true,
+              "gdp": 0.07878004014492035,
+              "perf": 0.6267529129981995,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.000348042871337384,
+              "threshold": 0.2974821808189981,
+              "reject": true,
+              "gdp": 0.04153415560722351,
+              "perf": 0.5911542177200317,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.0002988343476317823,
+              "threshold": 0.2942965424517621,
+              "reject": false,
+              "gdp": 0.009294136427342892,
+              "perf": 0.5167205929756165,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.00032363401260226965,
+              "threshold": 0.27042059967838367,
+              "reject": true,
+              "gdp": 0.009224691428244114,
+              "perf": 0.5167205929756165,
+              "perf_name": "Acc"
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "selected_lambda": 10.0,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.0011263936758041382,
+              "threshold": 0.30423411642950404,
+              "reject": true,
+              "gdp": 0.17599064111709595,
+              "perf": 0.6763753890991211,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.00084491545567289,
+              "threshold": 0.2938760114866302,
+              "reject": true,
+              "gdp": 0.18000449240207672,
+              "perf": 0.6720603704452515,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0007681434508413076,
+              "threshold": 0.2949256717709268,
+              "reject": true,
+              "gdp": 0.17979781329631805,
+              "perf": 0.6720603704452515,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0007728287018835545,
+              "threshold": 0.2867063844547446,
+              "reject": true,
+              "gdp": 0.1799384206533432,
+              "perf": 0.680690348148346,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0004176738439127803,
+              "threshold": 0.29748688563539527,
+              "reject": true,
+              "gdp": 0.1588982492685318,
+              "perf": 0.6763753890991211,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0002641014289110899,
+              "threshold": 0.3003231095522214,
+              "reject": false,
+              "gdp": 0.1491292119026184,
+              "perf": 0.6655879020690918,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.0002721431665122509,
+              "threshold": 0.3016634733027379,
+              "reject": false,
+              "gdp": 0.08612554520368576,
+              "perf": 0.6202804446220398,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.0004711790825240314,
+              "threshold": 0.3184318968546052,
+              "reject": true,
+              "gdp": 0.002544804709032178,
+              "perf": 0.554476797580719,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.0010740678990259767,
+              "threshold": 0.32223025374202147,
+              "reject": true,
+              "gdp": 0.00019914239237550646,
+              "perf": 0.5404530763626099,
+              "perf_name": "Acc"
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "selected_lambda": 100.0,
+          "results": [
+            {
+              "lambda": 0.01,
+              "hsic_val": 0.0015363419661298394,
+              "threshold": 0.3103718501991339,
+              "reject": true,
+              "gdp": 0.04768248274922371,
+              "perf": 0.662351667881012,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.1,
+              "hsic_val": 0.001072024111635983,
+              "threshold": 0.3083399768863287,
+              "reject": true,
+              "gdp": 0.06118093430995941,
+              "perf": 0.663430392742157,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 0.5,
+              "hsic_val": 0.0008910805336199701,
+              "threshold": 0.30071218256686855,
+              "reject": true,
+              "gdp": 0.053840357810258865,
+              "perf": 0.662351667881012,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 1.0,
+              "hsic_val": 0.0008837750647217035,
+              "threshold": 0.2757009533634159,
+              "reject": true,
+              "gdp": 0.06149376556277275,
+              "perf": 0.662351667881012,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 5.0,
+              "hsic_val": 0.0006358220125548542,
+              "threshold": 0.2976805391793325,
+              "reject": true,
+              "gdp": 0.05487384647130966,
+              "perf": 0.6558791399002075,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 10.0,
+              "hsic_val": 0.0005592345842160285,
+              "threshold": 0.28412838311954525,
+              "reject": true,
+              "gdp": 0.04338190332055092,
+              "perf": 0.6407766938209534,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 50.0,
+              "hsic_val": 0.0003539781318977475,
+              "threshold": 0.2785745685635499,
+              "reject": true,
+              "gdp": 0.020827168598771095,
+              "perf": 0.6343041658401489,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 100.0,
+              "hsic_val": 0.00028728594770655036,
+              "threshold": 0.29810084272429355,
+              "reject": false,
+              "gdp": 0.0053847176022827625,
+              "perf": 0.5868392586708069,
+              "perf_name": "Acc"
+            },
+            {
+              "lambda": 500.0,
+              "hsic_val": 0.0005217729485593736,
+              "threshold": 0.3375430391050093,
+              "reject": true,
+              "gdp": 0.0001885613746708259,
+              "perf": 0.5631067752838135,
+              "perf_name": "Acc"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

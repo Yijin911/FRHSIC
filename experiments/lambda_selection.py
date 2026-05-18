@@ -11,6 +11,8 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import os
+import json
+import argparse
 
 from utils import (
     DEVICE, HIDDEN_DIM, Z_DIM, EPOCHS,
@@ -21,9 +23,14 @@ from real_data import load_adult, load_communities, load_compas, train_frhsic, B
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+# Persisted raw numeric results so the figure can be restyled later
+# (python lambda_selection.py --replot) without re-running the experiment.
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "results")
+os.makedirs(DATA_DIR, exist_ok=True)
+CACHE = os.path.join(DATA_DIR, "lambda_selection_data.json")
 
 
-def run_lambda_selection():
+def compute_results():
     """
     For each dataset:
     1. Train FRHSIC at increasing lambda values
@@ -128,8 +135,9 @@ def run_lambda_selection():
                 print(f"  {lam:8.2f}  {hsic_val:10.6f}  {threshold:10.6f}  {status:>7s}  {gdp:8.4f}  {perf:8.3f}")
 
                 repeat_results.append({
-                    "lambda": lam, "hsic_val": hsic_val, "threshold": threshold,
-                    "reject": reject, "gdp": gdp, "perf": perf, "perf_name": perf_name,
+                    "lambda": float(lam), "hsic_val": float(hsic_val),
+                    "threshold": float(threshold), "reject": bool(reject),
+                    "gdp": float(gdp), "perf": float(perf), "perf_name": perf_name,
                 })
 
                 if selected_lambda is None and not reject:
@@ -142,7 +150,9 @@ def run_lambda_selection():
 
             dataset_results.append({
                 "repeat": repeat,
-                "selected_lambda": selected_lambda,
+                "selected_lambda": (
+                    float(selected_lambda) if selected_lambda is not None else None
+                ),
                 "results": repeat_results,
             })
 
@@ -151,6 +161,31 @@ def run_lambda_selection():
             "task": task,
             "dataset_results": dataset_results,
         }
+
+    payload = {
+        "alpha_test": alpha_test,
+        "all_results": all_results,
+    }
+    with open(CACHE, "w") as f:
+        json.dump(payload, f, indent=2)
+    print(f"Saved raw results to {CACHE}")
+    return payload
+
+
+def run_lambda_selection(replot=False):
+    if replot:
+        if not os.path.exists(CACHE):
+            raise FileNotFoundError(
+                f"{CACHE} not found; run without --replot once to generate it."
+            )
+        with open(CACHE) as f:
+            payload = json.load(f)
+        print(f"Loaded cached results from {CACHE} (no re-run).")
+    else:
+        payload = compute_results()
+
+    alpha_test = payload["alpha_test"]
+    all_results = payload["all_results"]
 
     # ── Plot ──
     n_datasets = len(all_results)
@@ -209,6 +244,12 @@ def run_lambda_selection():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replot", action="store_true",
+        help="Re-draw the figure from cached results without re-running.",
+    )
+    args = parser.parse_args()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
-    run_lambda_selection()
+    run_lambda_selection(replot=args.replot)

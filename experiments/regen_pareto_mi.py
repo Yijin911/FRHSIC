@@ -17,7 +17,7 @@ RESULTS_DIR = ROOT / "results"
 
 DATASETS = [
     ("adult", "Adult"),
-    ("communities", "Communities"),
+    ("communities", "Crime"),
     ("acs_income", "ACS Income"),
     ("meps", "MEPS"),
     ("compas", "COMPAS"),
@@ -25,7 +25,7 @@ DATASETS = [
 
 METHOD_ORDER = [
     "FRHSIC (Ours)", "FREM", "Reg-GDP", "ADV",
-    "MMD (binned)", "LAFTR (binned)", "dCor",
+    "MMD (binned)", "LAFTR (binned)",
 ]
 
 COLORS = {
@@ -95,12 +95,25 @@ def collect_dataset(dname):
 
 
 def plot_pareto(all_data):
-    n = len(all_data)
-    fig, axes = plt.subplots(1, n, figsize=(5.2 * n, 4.5))
-    if n == 1:
-        axes = [axes]
-    for ax, (key, label) in zip(axes, DATASETS):
+    # figsize width = 1.0 * W_text (LaTeX inclusion width changed to \textwidth)
+    # W_text = 370.38374pt / 72.27pt/in = 5.124"
+    # Layout: 3 columns x 2 rows (last cell empty for 5 datasets)
+    W_text = 5.124
+    fig_w = W_text          # 5.124"
+    # Each panel aspect ~1:1 at ~1.7" wide; 2 rows with shared legend below
+    fig_h = fig_w * 0.72    # 3.689"
+    ncols, nrows = 3, 2
+    fig, axes = plt.subplots(nrows, ncols, figsize=(fig_w, fig_h))
+    axes_flat = axes.flatten()
+    # Hide the unused last cell (5 datasets in 6 slots)
+    if len(DATASETS) < ncols * nrows:
+        for extra in axes_flat[len(DATASETS):]:
+            extra.set_visible(False)
+
+    all_handles, all_labels = {}, {}
+    for ax, (key, label) in zip(axes_flat, DATASETS):
         if key not in all_data:
+            ax.set_visible(False)
             continue
         results = all_data[key]
         perf_name = None
@@ -112,27 +125,38 @@ def plot_pareto(all_data):
             perfs = np.array([r["perf"] for r in rows])
             perf_name = rows[0]["perf_name"]
             order = np.argsort(gdps)
-            ax.plot(
+            h, = ax.plot(
                 gdps[order], perfs[order],
                 marker=MARKERS[method], color=COLORS[method],
-                linewidth=2, markersize=6, label=method,
+                linewidth=0.9, markersize=2.5, label=method,
             )
+            if method not in all_labels:
+                all_handles[method] = h
+                all_labels[method] = method
         unfair = results.get("Unfair")
         if unfair:
-            ax.scatter(
+            h = ax.scatter(
                 unfair[0]["gdp"], unfair[0]["perf"],
-                marker="*", s=200, c="black", zorder=10, label="Unfair",
+                marker="*", s=45, c="black", zorder=10, label="Unfair",
             )
-        ax.set_xlabel(r"$\Delta_{\mathrm{GDP}}$ (lower = fairer)", fontsize=11)
-        y_lab = perf_name if perf_name else "Performance"
-        if y_lab == "MSE":
-            ax.set_ylabel(f"{y_lab} (lower = better)", fontsize=11)
-        else:
-            ax.set_ylabel(f"{y_lab} (higher = better)", fontsize=11)
-        ax.set_title(label, fontsize=12)
+            if "Unfair" not in all_labels:
+                all_handles["Unfair"] = h
+                all_labels["Unfair"] = "Unfair"
+        ax.set_xlabel(r"$\Delta_{\mathrm{GDP}}$", fontsize=9)
+        y_lab = perf_name if perf_name else "Perf."
+        ax.set_ylabel(y_lab, fontsize=9)
+        ax.set_title(label, fontsize=9)
+        ax.tick_params(axis="both", labelsize=8)
         ax.grid(True, alpha=0.3)
-        ax.legend(fontsize=7, loc="best")
-    plt.tight_layout()
+
+    handles_list = list(all_handles.values())
+    labels_list = list(all_labels.values())
+    fig.legend(handles_list, labels_list, loc="lower center",
+               bbox_to_anchor=(0.5, -0.04), ncol=len(labels_list),
+               fontsize=6.5, frameon=False, handlelength=1.4,
+               columnspacing=1.0, handletextpad=0.4)
+    fig.tight_layout()
+    fig.subplots_adjust(bottom=0.16)
     fig.savefig(FIGS / "pareto_curves.pdf", bbox_inches="tight")
     fig.savefig(FIGS / "pareto_curves.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -140,12 +164,28 @@ def plot_pareto(all_data):
 
 
 def plot_mi(all_data):
-    n = len(all_data)
-    fig, axes = plt.subplots(1, n, figsize=(5.2 * n, 4.5))
-    if n == 1:
-        axes = [axes]
-    for ax, (key, label) in zip(axes, DATASETS):
+    # COMPAS is excluded: the KSG MI estimator collapses to ~0 on its
+    # low-dimensional, discrete-valued feature space (the same reason
+    # Table 1 marks COMPAS MI as "---"), so the COMPAS MI panel is a
+    # degenerate vertical line and is not shown.
+    mi_datasets = [(k, lbl) for (k, lbl) in DATASETS if k != "compas"]
+    # figsize width = 1.0 * W_text (LaTeX inclusion width = \textwidth)
+    # W_text = 370.38374pt / 72.27pt/in = 5.124"
+    # Layout: 2 columns x 2 rows for the 4 retained datasets.
+    W_text = 5.124
+    fig_w = W_text          # 5.124"
+    fig_h = fig_w * 0.78
+    ncols, nrows = 2, 2
+    fig, axes = plt.subplots(nrows, ncols, figsize=(fig_w, fig_h))
+    axes_flat = axes.flatten()
+    if len(mi_datasets) < ncols * nrows:
+        for extra in axes_flat[len(mi_datasets):]:
+            extra.set_visible(False)
+
+    all_handles, all_labels = {}, {}
+    for ax, (key, label) in zip(axes_flat, mi_datasets):
         if key not in all_data:
+            ax.set_visible(False)
             continue
         results = all_data[key]
         perf_name = None
@@ -157,27 +197,38 @@ def plot_mi(all_data):
             perfs = np.array([r["perf"] for r in rows])
             perf_name = rows[0]["perf_name"]
             order = np.argsort(mis)
-            ax.plot(
+            h, = ax.plot(
                 mis[order], perfs[order],
                 marker=MARKERS[method], color=COLORS[method],
-                linewidth=2, markersize=6, label=method,
+                linewidth=0.9, markersize=2.5, label=method,
             )
+            if method not in all_labels:
+                all_handles[method] = h
+                all_labels[method] = method
         unfair = results.get("Unfair")
         if unfair:
-            ax.scatter(
+            h = ax.scatter(
                 unfair[0]["mi"], unfair[0]["perf"],
-                marker="*", s=200, c="black", zorder=10, label="Unfair",
+                marker="*", s=45, c="black", zorder=10, label="Unfair",
             )
-        ax.set_xlabel(r"$\mathrm{MI}(Z, S)$ (lower = fairer)", fontsize=11)
-        y_lab = perf_name if perf_name else "Performance"
-        if y_lab == "MSE":
-            ax.set_ylabel(f"{y_lab} (lower = better)", fontsize=11)
-        else:
-            ax.set_ylabel(f"{y_lab} (higher = better)", fontsize=11)
-        ax.set_title(label, fontsize=12)
+            if "Unfair" not in all_labels:
+                all_handles["Unfair"] = h
+                all_labels["Unfair"] = "Unfair"
+        ax.set_xlabel(r"$\mathrm{MI}(Z, S)$", fontsize=9)
+        y_lab = perf_name if perf_name else "Perf."
+        ax.set_ylabel(y_lab, fontsize=9)
+        ax.set_title(label, fontsize=9)
+        ax.tick_params(axis="both", labelsize=8)
         ax.grid(True, alpha=0.3)
-        ax.legend(fontsize=7, loc="best")
-    plt.tight_layout()
+
+    handles_list = list(all_handles.values())
+    labels_list = list(all_labels.values())
+    fig.legend(handles_list, labels_list, loc="lower center",
+               bbox_to_anchor=(0.5, -0.04), ncol=len(labels_list),
+               fontsize=6.5, frameon=False, handlelength=1.4,
+               columnspacing=1.0, handletextpad=0.4)
+    fig.tight_layout()
+    fig.subplots_adjust(bottom=0.16)
     fig.savefig(FIGS / "mi_curves.pdf", bbox_inches="tight")
     fig.savefig(FIGS / "mi_curves.png", dpi=150, bbox_inches="tight")
     plt.close(fig)

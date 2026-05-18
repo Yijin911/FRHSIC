@@ -12,6 +12,8 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import os
+import json
+import argparse
 
 from utils import (
     DEVICE, HIDDEN_DIM, Z_DIM, EPOCHS, KERNEL_SIGMA,
@@ -21,6 +23,11 @@ from real_data import BATCH_SIZE, SEED
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+# Persisted raw numeric results so the figure can be restyled later
+# (python multi_sensitive.py --replot) without re-running the experiment.
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "results")
+os.makedirs(DATA_DIR, exist_ok=True)
+CACHE = os.path.join(DATA_DIR, "multi_sensitive_data.json")
 
 
 def hsic_biased_multi(Z, S_multi, sigma_z=1.0, sigma_s=1.0):
@@ -144,7 +151,7 @@ def train_frhsic_sum(X, S_multi, Y, lam, z_dim=Z_DIM, epochs=EPOCHS,
     return encoder, predictor
 
 
-def run_multi_s_experiment():
+def compute_results():
     X_np, S_multi_np, Y_np = load_adult_multi_s()
 
     scaler = MinMaxScaler()
@@ -208,6 +215,42 @@ def run_multi_s_experiment():
 
         results[method_name] = method_results
 
+    payload = {
+        "s_names": s_names,
+        "lambdas": lambdas,
+        "results": {
+            method_name: [
+                {
+                    "lam": float(r["lam"]),
+                    "acc": float(r["acc"]),
+                    "gdps": [float(g) for g in r["gdps"]],
+                }
+                for r in method_results
+            ]
+            for method_name, method_results in results.items()
+        },
+    }
+    with open(CACHE, "w") as f:
+        json.dump(payload, f, indent=2)
+    print(f"Saved raw results to {CACHE}")
+    return payload
+
+
+def run_multi_s_experiment(replot=False):
+    if replot:
+        if not os.path.exists(CACHE):
+            raise FileNotFoundError(
+                f"{CACHE} not found; run without --replot once to generate it."
+            )
+        with open(CACHE) as f:
+            payload = json.load(f)
+        print(f"Loaded cached results from {CACHE} (no re-run).")
+    else:
+        payload = compute_results()
+
+    s_names = payload["s_names"]
+    results = payload["results"]
+
     # Plot
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     for d, (ax, sname) in enumerate(zip(axes, s_names)):
@@ -233,10 +276,14 @@ def run_multi_s_experiment():
     fig.savefig(os.path.join(RESULTS_DIR, "multi_sensitive.png"), dpi=150, bbox_inches="tight")
     print(f"\nMulti-S figure saved to {RESULTS_DIR}/multi_sensitive.{{pdf,png}}")
 
-    return results
-
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replot", action="store_true",
+        help="Re-draw the figure from cached results without re-running.",
+    )
+    args = parser.parse_args()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
-    run_multi_s_experiment()
+    run_multi_s_experiment(replot=args.replot)

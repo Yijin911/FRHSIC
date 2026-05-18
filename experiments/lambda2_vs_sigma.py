@@ -10,6 +10,8 @@ supporting the claim that hat_lambda_S scales polynomially with sigma.
 Convention (matches Theorem 3.3): hat_lambda_S = lambda_min^+((1/n) tilde{L}).
 """
 import os
+import json
+import argparse
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
@@ -21,9 +23,14 @@ from bound_tightness import empirical_lambda2
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+# Persisted raw numeric results so the figure can be restyled later
+# (python lambda2_vs_sigma.py --replot) without re-running the experiment.
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "results")
+os.makedirs(DATA_DIR, exist_ok=True)
+CACHE = os.path.join(DATA_DIR, "lambda2_vs_sigma_data.json")
 
 
-def run_lambda2_vs_sigma():
+def compute_results():
     datasets = {
         "adult": load_adult,
         "communities": load_communities,
@@ -64,12 +71,33 @@ def run_lambda2_vs_sigma():
         print(f"  Empirical log-log slope = {slope:.3f}  (expected ~ -d_s = -1)")
 
         all_results[dname] = {
-            "sigmas": sigmas,
-            "values": values,
-            "slope": slope,
-            "intercept": intercept,
+            "sigmas": [float(s) for s in sigmas],
+            "values": [float(v) for v in values],
+            "slope": float(slope),
+            "intercept": float(intercept),
             "display_name": display_name,
         }
+
+    payload = {"all_results": all_results}
+    with open(CACHE, "w") as f:
+        json.dump(payload, f, indent=2)
+    print(f"Saved raw results to {CACHE}")
+    return payload
+
+
+def run_lambda2_vs_sigma(replot=False):
+    if replot:
+        if not os.path.exists(CACHE):
+            raise FileNotFoundError(
+                f"{CACHE} not found; run without --replot once to generate it."
+            )
+        with open(CACHE) as f:
+            payload = json.load(f)
+        print(f"Loaded cached results from {CACHE} (no re-run).")
+    else:
+        payload = compute_results()
+
+    all_results = payload["all_results"]
 
     # Plot both datasets on a single log-log axis
     fig, ax = plt.subplots(figsize=(6, 5))
@@ -94,6 +122,12 @@ def run_lambda2_vs_sigma():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replot", action="store_true",
+        help="Re-draw the figure from cached results without re-running.",
+    )
+    args = parser.parse_args()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
-    run_lambda2_vs_sigma()
+    run_lambda2_vs_sigma(replot=args.replot)

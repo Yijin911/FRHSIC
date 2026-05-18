@@ -10,6 +10,8 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 import time
 import os
+import json
+import argparse
 import matplotlib.pyplot as plt
 
 from utils import (
@@ -21,6 +23,13 @@ SEED = 42
 BATCH_SIZE = 256
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+# Persisted raw wall-clock measurements so the figure can be restyled
+# later (python runtime.py --replot) without re-timing the experiment.
+# Wall-clock numbers are NOT reproducible across machines, so the cache
+# is the single source of truth once measured.
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "results")
+os.makedirs(DATA_DIR, exist_ok=True)
+CACHE = os.path.join(DATA_DIR, "runtime_data.json")
 
 
 def generate_data(n):
@@ -82,7 +91,7 @@ def train_one_epoch_reg_gdp(loader, encoder, predictor, opt, bce, lam=1.0):
         opt.step()
 
 
-def run_runtime_experiment():
+def compute_results():
     sample_sizes = [500, 1000, 2000, 5000, 10000, 20000]
     n_repeats = 3
     z_dim = 8
@@ -133,8 +142,42 @@ def run_runtime_experiment():
             times = results[method][n]
             print(f"  {method:10s}: {np.mean(times):.4f} ± {np.std(times):.4f} sec/epoch")
 
+    payload = {
+        "sample_sizes": sample_sizes,
+        "results": {
+            m: {str(n): results[m][n] for n in sample_sizes} for m in results
+        },
+    }
+    with open(CACHE, "w") as f:
+        json.dump(payload, f, indent=2)
+    print(f"Saved raw measurements to {CACHE}")
+    return payload
+
+
+def run_runtime_experiment(replot=False):
+    if replot:
+        if not os.path.exists(CACHE):
+            raise FileNotFoundError(
+                f"{CACHE} not found; run without --replot once to generate it."
+            )
+        with open(CACHE) as f:
+            payload = json.load(f)
+        print(f"Loaded cached measurements from {CACHE} (no re-timing).")
+    else:
+        payload = compute_results()
+
+    sample_sizes = payload["sample_sizes"]
+    results = {
+        m: {int(n): v for n, v in payload["results"][m].items()}
+        for m in payload["results"]
+    }
+
     # Plot
-    fig, ax = plt.subplots(figsize=(8, 5))
+    # figsize width = 0.6 * W_text, where W_text = 370.38374pt / 72.27pt/in = 5.124"
+    W_text = 5.124
+    fig_w = 0.6 * W_text   # 3.074"
+    fig_h = fig_w * 0.82   # 2.521"
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h))
     colors = {"FRHSIC": "tab:red", "FREM": "tab:green", "Reg-GDP": "tab:blue"}
     markers = {"FRHSIC": "o", "FREM": "s", "Reg-GDP": "^"}
 
@@ -144,16 +187,22 @@ def run_runtime_experiment():
         ax.errorbar(
             sample_sizes, means, yerr=stds,
             marker=markers[method], color=colors[method],
-            linewidth=2, markersize=8, capsize=4, label=method,
+            linewidth=1.0, markersize=3.5, capsize=2, label=method,
         )
 
-    ax.set_xlabel("Sample Size $n$", fontsize=13)
-    ax.set_ylabel("Time per Epoch (seconds)", fontsize=13)
-    ax.set_title("Computational Efficiency (batch size = 256)", fontsize=14)
-    ax.legend(fontsize=11)
+    ax.set_xlabel("Sample size $n$", fontsize=10)
+    ax.set_ylabel("Time per epoch (seconds)", fontsize=10)
+    ax.tick_params(axis="both", labelsize=9)
     ax.grid(True, alpha=0.3)
     ax.set_xscale("log")
     ax.set_yscale("log")
+
+    # Legend below the plot
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, -0.02),
+               ncol=min(len(labels), 5), fontsize=9, frameon=False)
+    fig.tight_layout()
+    fig.subplots_adjust(bottom=0.28)
 
     fig.savefig(os.path.join(RESULTS_DIR, "runtime_comparison.pdf"), bbox_inches="tight")
     fig.savefig(os.path.join(RESULTS_DIR, "runtime_comparison.png"), dpi=150, bbox_inches="tight")
@@ -161,6 +210,12 @@ def run_runtime_experiment():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replot", action="store_true",
+        help="Re-draw the figure from cached measurements without re-timing.",
+    )
+    args = parser.parse_args()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
-    run_runtime_experiment()
+    run_runtime_experiment(replot=args.replot)

@@ -31,6 +31,8 @@ Scale choices (T4 demonstration figure, not a comprehensive sweep):
 import numpy as np
 import torch
 import os
+import json
+import argparse
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
@@ -45,6 +47,11 @@ from real_data import (
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+# Persisted raw numeric results so the figure can be restyled later
+# (python bound_tightness.py --replot) without re-running the experiment.
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "results")
+os.makedirs(DATA_DIR, exist_ok=True)
+CACHE = os.path.join(DATA_DIR, "bound_tightness_data.json")
 
 
 def empirical_lambda2(S_values, sigma_s, rel_tol=1e-6):
@@ -108,7 +115,7 @@ def empirical_lhs_rkhs(Z, S_values, sigma_z, n_anchors=32, rng=None):
         return per_anchor.mean().item(), per_anchor.max().item(), f_norm_sq
 
 
-def run_bound_tightness():
+def compute_results():
     datasets = {
         "adult": load_adult,
         "communities": load_communities,
@@ -183,15 +190,36 @@ def run_bound_tightness():
                   f"Bound={bound_val:.4e} | Ratio (bound / LHS_max)={ratio:.2f}x")
 
         all_results[dname] = {
-            "lambdas": lambdas,
-            "bounds": bounds_mean,
-            "lhs_mean": lhs_mean,
-            "lhs_max": lhs_max,
-            "hsics": hsics,
-            "hat_lambda_S": hat_lambda_S,
-            "sigma_s": sigma_s,
+            "lambdas": [float(x) for x in lambdas],
+            "bounds": [float(x) for x in bounds_mean],
+            "lhs_mean": [float(x) for x in lhs_mean],
+            "lhs_max": [float(x) for x in lhs_max],
+            "hsics": [float(x) for x in hsics],
+            "hat_lambda_S": float(hat_lambda_S),
+            "sigma_s": float(sigma_s),
             "display_name": display_name,
         }
+
+    payload = {"all_results": all_results}
+    with open(CACHE, "w") as f:
+        json.dump(payload, f, indent=2)
+    print(f"Saved raw results to {CACHE}")
+    return payload
+
+
+def run_bound_tightness(replot=False):
+    if replot:
+        if not os.path.exists(CACHE):
+            raise FileNotFoundError(
+                f"{CACHE} not found; run without --replot once to generate it."
+            )
+        with open(CACHE) as f:
+            payload = json.load(f)
+        print(f"Loaded cached results from {CACHE} (no re-run).")
+    else:
+        payload = compute_results()
+
+    all_results = payload["all_results"]
 
     # Plot
     n_datasets = len(all_results)
@@ -222,10 +250,14 @@ def run_bound_tightness():
     fig.savefig(os.path.join(RESULTS_DIR, "bound_tightness.png"), dpi=150, bbox_inches="tight")
     print(f"\nBound tightness figure saved to {RESULTS_DIR}/bound_tightness.{{pdf,png}}")
 
-    return all_results
-
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replot", action="store_true",
+        help="Re-draw the figure from cached results without re-running.",
+    )
+    args = parser.parse_args()
     torch.manual_seed(SEED)
     np.random.seed(SEED)
-    run_bound_tightness()
+    run_bound_tightness(replot=args.replot)
