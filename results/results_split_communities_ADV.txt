@@ -1,4 +1,4 @@
-# dataset=communities method=ADV gpu=4 task=regression n=1994 d=99
+# dataset=communities method=ADV task=regression n=1994 d=99
   ADV                                (lam=0.01) | MSE: 0.0192+/-0.0022 | GDP: 0.0294+/-0.0047 | MI: 0.0339 | MI_sk: 0.2449
   ADV                                (lam=0.1) | MSE: 0.0192+/-0.0018 | GDP: 0.0290+/-0.0033 | MI: 0.0000 | MI_sk: 0.3162
   ADV                                (lam=0.5) | MSE: 0.0189+/-0.0017 | GDP: 0.0296+/-0.0036 | MI: 0.0000 | MI_sk: 0.3229

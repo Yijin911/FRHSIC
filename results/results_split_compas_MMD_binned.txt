@@ -1,4 +1,4 @@
-# dataset=compas method=MMD (binned) gpu=5 task=classification n=6172 d=16
+# dataset=compas method=MMD (binned) task=classification n=6172 d=16
   MMD (binned)                       (lam=0.01) | Acc: 0.6531+/-0.0140 | GDP: 0.1250+/-0.0290 | MI: 0.0000 | MI_sk: 0.2692
   MMD (binned)                       (lam=0.1) | Acc: 0.6554+/-0.0138 | GDP: 0.1216+/-0.0317 | MI: 0.0000 | MI_sk: 0.2588
   MMD (binned)                       (lam=0.5) | Acc: 0.6521+/-0.0132 | GDP: 0.1155+/-0.0319 | MI: 0.0000 | MI_sk: 0.2663

@@ -1,4 +1,4 @@
-# dataset=adult method=FREM gpu=3 task=classification n=32561 d=107
+# dataset=adult method=FREM task=classification n=32561 d=107
   FREM                               (lam=0.01) | Acc: 0.8494+/-0.0025 | GDP: 0.7866+/-0.0297 | MI: 0.0014 | MI_sk: 0.2699
   FREM                               (lam=0.1) | Acc: 0.8491+/-0.0041 | GDP: 0.7893+/-0.0351 | MI: 0.0000 | MI_sk: 0.2587
   FREM                               (lam=0.5) | Acc: 0.8492+/-0.0032 | GDP: 0.7975+/-0.0412 | MI: 0.0000 | MI_sk: 0.2589

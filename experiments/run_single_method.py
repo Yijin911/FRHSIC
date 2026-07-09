@@ -4,12 +4,10 @@ import numpy as np
 import torch
 
 if len(sys.argv) < 3:
-    print("Usage: python run_single_method.py <dataset> <method> [<gpu_id>]")
+    print("Usage: python run_single_method.py <dataset> <method>")
     sys.exit(1)
 dataset = sys.argv[1]
 method = sys.argv[2]
-gpu = sys.argv[3] if len(sys.argv) > 3 else "0"
-os.environ["CUDA_VISIBLE_DEVICES"] = gpu
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from real_data import (
@@ -31,6 +29,8 @@ result = DATASETS[dataset]()
 X_np, S_np, Y_np, display_name, task = result
 n = X_np.shape[0]
 lambdas = [0.01, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0, 100.0, 500.0]
+# FRHSIC's fairness-accuracy frontier is resolved on a denser lambda grid.
+frhsic_lambdas = sorted(lambdas + [2.0, 20.0, 30.0, 70.0, 150.0, 200.0, 300.0, 750.0, 1000.0])
 train_fn = METHODS[method]
 
 safe = method.replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_')
@@ -39,9 +39,15 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 outfile = os.path.join(RESULTS_DIR, f"results_split_{dataset}_{safe}.txt")
 print(f"Writing to {outfile}", flush=True)
 with open(outfile, "w") as f:
-    f.write(f"# dataset={dataset} method={method} gpu={gpu} task={task} n={n} d={X_np.shape[1]}\n")
+    f.write(f"# dataset={dataset} method={method} task={task} n={n} d={X_np.shape[1]}\n")
 
-for lam in ([0.0] if method == "Unfair" else lambdas):
+if method == "Unfair":
+    grid = [0.0]
+elif method == "FRHSIC (Ours)":
+    grid = frhsic_lambdas
+else:
+    grid = lambdas
+for lam in grid:
     perfs, gdps, mis, mi_sks = [], [], [], []
     for rep in range(N_REPEATS):
         torch.manual_seed(SEED + rep)

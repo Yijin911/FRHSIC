@@ -1,4 +1,4 @@
-# dataset=meps method=LAFTR (binned) gpu=6 task=classification n=13283 d=19
+# dataset=meps method=LAFTR (binned) task=classification n=13283 d=19
   LAFTR (binned)                     (lam=0.01) | Acc: 0.8035+/-0.0048 | GDP: 0.6183+/-0.0129 | MI: 0.1458 | MI_sk: 0.4163
   LAFTR (binned)                     (lam=0.1) | Acc: 0.8032+/-0.0059 | GDP: 0.5302+/-0.0186 | MI: 0.0132 | MI_sk: 0.3761
   LAFTR (binned)                     (lam=0.5) | Acc: 0.7949+/-0.0033 | GDP: 0.2688+/-0.0222 | MI: 0.0000 | MI_sk: 0.2752

@@ -1,4 +1,4 @@
-# dataset=compas method=FRHSIC (Ours) gpu=1 task=classification n=6172 d=16
+# dataset=compas method=FRHSIC (Ours) task=classification n=6172 d=16
   FRHSIC (Ours)                      (lam=0.01) | Acc: 0.6538+/-0.0136 | GDP: 0.1226+/-0.0255 | MI: 0.0000 | MI_sk: 0.2654
   FRHSIC (Ours)                      (lam=0.1) | Acc: 0.6546+/-0.0132 | GDP: 0.1220+/-0.0255 | MI: 0.0000 | MI_sk: 0.2553
   FRHSIC (Ours)                      (lam=0.5) | Acc: 0.6523+/-0.0144 | GDP: 0.1213+/-0.0258 | MI: 0.0000 | MI_sk: 0.2537

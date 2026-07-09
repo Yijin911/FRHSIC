@@ -1,4 +1,4 @@
-# dataset=compas method=Reg-GDP gpu=2 task=classification n=6172 d=16
+# dataset=compas method=Reg-GDP task=classification n=6172 d=16
   Reg-GDP                            (lam=0.01) | Acc: 0.6546+/-0.0128 | GDP: 0.1196+/-0.0252 | MI: 0.0000 | MI_sk: 0.2634
   Reg-GDP                            (lam=0.1) | Acc: 0.6530+/-0.0137 | GDP: 0.1050+/-0.0241 | MI: 0.0000 | MI_sk: 0.2594
   Reg-GDP                            (lam=0.5) | Acc: 0.6502+/-0.0116 | GDP: 0.0793+/-0.0186 | MI: 0.0000 | MI_sk: 0.2603

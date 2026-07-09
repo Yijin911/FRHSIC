@@ -1,4 +1,4 @@
-# dataset=adult method=ADV gpu=4 task=classification n=32561 d=107
+# dataset=adult method=ADV task=classification n=32561 d=107
   ADV                                (lam=0.01) | Acc: 0.8495+/-0.0028 | GDP: 0.7649+/-0.0427 | MI: 0.0506 | MI_sk: 0.2583
   ADV                                (lam=0.1) | Acc: 0.8487+/-0.0028 | GDP: 0.7503+/-0.0507 | MI: 0.0122 | MI_sk: 0.2471
   ADV                                (lam=0.5) | Acc: 0.8479+/-0.0027 | GDP: 0.6954+/-0.0564 | MI: 0.0000 | MI_sk: 0.2331

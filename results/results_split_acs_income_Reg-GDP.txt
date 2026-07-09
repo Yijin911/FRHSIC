@@ -1,4 +1,4 @@
-# dataset=acs_income method=Reg-GDP gpu=2 task=classification n=20000 d=9
+# dataset=acs_income method=Reg-GDP task=classification n=20000 d=9
   Reg-GDP                            (lam=0.01) | Acc: 0.7902+/-0.0051 | GDP: 0.4840+/-0.0552 | MI: 0.1499 | MI_sk: 0.3934
   Reg-GDP                            (lam=0.1) | Acc: 0.7875+/-0.0023 | GDP: 0.2920+/-0.0403 | MI: 0.1471 | MI_sk: 0.3745
   Reg-GDP                            (lam=0.5) | Acc: 0.7780+/-0.0010 | GDP: 0.1013+/-0.0088 | MI: 0.0773 | MI_sk: 0.3107

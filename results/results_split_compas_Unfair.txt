@@ -1,2 +1,2 @@
-# dataset=compas method=Unfair gpu=0 task=classification n=6172 d=16
+# dataset=compas method=Unfair task=classification n=6172 d=16
   Unfair                             (lam=0.0) | Acc: 0.6539+/-0.0134 | GDP: 0.1226+/-0.0255 | MI: 0.0000 | MI_sk: 0.2665

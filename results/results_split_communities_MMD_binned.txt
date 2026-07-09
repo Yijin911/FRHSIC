@@ -1,4 +1,4 @@
-# dataset=communities method=MMD (binned) gpu=5 task=regression n=1994 d=99
+# dataset=communities method=MMD (binned) task=regression n=1994 d=99
   MMD (binned)                       (lam=0.01) | MSE: 0.0195+/-0.0021 | GDP: 0.0283+/-0.0047 | MI: 0.0307 | MI_sk: 0.1588
   MMD (binned)                       (lam=0.1) | MSE: 0.0194+/-0.0027 | GDP: 0.0256+/-0.0048 | MI: 0.0336 | MI_sk: 0.1612
   MMD (binned)                       (lam=0.5) | MSE: 0.0199+/-0.0025 | GDP: 0.0222+/-0.0039 | MI: 0.0301 | MI_sk: 0.1715

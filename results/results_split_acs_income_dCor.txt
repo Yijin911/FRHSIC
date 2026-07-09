@@ -1,4 +1,4 @@
-# dataset=acs_income method=dCor gpu=7 task=classification n=20000 d=9
+# dataset=acs_income method=dCor task=classification n=20000 d=9
   dCor                               (lam=0.01) | Acc: 0.7902+/-0.0054 | GDP: 0.5156+/-0.0579 | MI: 0.0998 | MI_sk: 0.3559
   dCor                               (lam=0.1) | Acc: 0.7894+/-0.0047 | GDP: 0.5087+/-0.0577 | MI: 0.0659 | MI_sk: 0.3556
   dCor                               (lam=0.5) | Acc: 0.7891+/-0.0037 | GDP: 0.4958+/-0.0516 | MI: 0.0542 | MI_sk: 0.3532

@@ -1,4 +1,4 @@
-# dataset=adult method=Reg-GDP gpu=2 task=classification n=32561 d=107
+# dataset=adult method=Reg-GDP task=classification n=32561 d=107
   Reg-GDP                            (lam=0.01) | Acc: 0.8493+/-0.0030 | GDP: 0.6131+/-0.0595 | MI: 0.0777 | MI_sk: 0.2705
   Reg-GDP                            (lam=0.1) | Acc: 0.8478+/-0.0018 | GDP: 0.4126+/-0.0338 | MI: 0.1386 | MI_sk: 0.2508
   Reg-GDP                            (lam=0.5) | Acc: 0.8482+/-0.0035 | GDP: 0.1590+/-0.0280 | MI: 0.1202 | MI_sk: 0.2618

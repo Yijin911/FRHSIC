@@ -1,4 +1,4 @@
-# dataset=meps method=dCor gpu=7 task=classification n=13283 d=19
+# dataset=meps method=dCor task=classification n=13283 d=19
   dCor                               (lam=0.01) | Acc: 0.8038+/-0.0047 | GDP: 0.6286+/-0.0155 | MI: 0.1455 | MI_sk: 0.4220
   dCor                               (lam=0.1) | Acc: 0.8045+/-0.0056 | GDP: 0.6273+/-0.0121 | MI: 0.0436 | MI_sk: 0.4130
   dCor                               (lam=0.5) | Acc: 0.8038+/-0.0055 | GDP: 0.6179+/-0.0111 | MI: 0.0553 | MI_sk: 0.3763

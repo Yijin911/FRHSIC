@@ -1,4 +1,4 @@
-# dataset=compas method=LAFTR (binned) gpu=6 task=classification n=6172 d=16
+# dataset=compas method=LAFTR (binned) task=classification n=6172 d=16
   LAFTR (binned)                     (lam=0.01) | Acc: 0.6551+/-0.0129 | GDP: 0.1221+/-0.0256 | MI: 0.0000 | MI_sk: 0.2676
   LAFTR (binned)                     (lam=0.1) | Acc: 0.6543+/-0.0131 | GDP: 0.1256+/-0.0244 | MI: 0.0000 | MI_sk: 0.2658
   LAFTR (binned)                     (lam=0.5) | Acc: 0.6525+/-0.0123 | GDP: 0.1280+/-0.0221 | MI: 0.0000 | MI_sk: 0.2615

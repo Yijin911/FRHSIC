@@ -1,4 +1,4 @@
-# dataset=adult method=dCor gpu=7 task=classification n=32561 d=107
+# dataset=adult method=dCor task=classification n=32561 d=107
   dCor                               (lam=0.01) | Acc: 0.8485+/-0.0023 | GDP: 0.7498+/-0.0341 | MI: 0.0260 | MI_sk: 0.2640
   dCor                               (lam=0.1) | Acc: 0.8496+/-0.0020 | GDP: 0.7273+/-0.0295 | MI: 0.0000 | MI_sk: 0.2506
   dCor                               (lam=0.5) | Acc: 0.8493+/-0.0026 | GDP: 0.6777+/-0.0408 | MI: 0.0192 | MI_sk: 0.2189

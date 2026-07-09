@@ -1,4 +1,4 @@
-# dataset=acs_income method=LAFTR (binned) gpu=6 task=classification n=20000 d=9
+# dataset=acs_income method=LAFTR (binned) task=classification n=20000 d=9
   LAFTR (binned)                     (lam=0.01) | Acc: 0.7894+/-0.0060 | GDP: 0.5151+/-0.0633 | MI: 0.0799 | MI_sk: 0.3778
   LAFTR (binned)                     (lam=0.1) | Acc: 0.7872+/-0.0033 | GDP: 0.4745+/-0.0375 | MI: 0.0000 | MI_sk: 0.3426
   LAFTR (binned)                     (lam=0.5) | Acc: 0.7807+/-0.0092 | GDP: 0.2711+/-0.0343 | MI: 0.0000 | MI_sk: 0.2924

@@ -1,2 +1,2 @@
-# dataset=adult method=Unfair gpu=0 task=classification n=32561 d=107
+# dataset=adult method=Unfair task=classification n=32561 d=107
   Unfair                             (lam=0.0) | Acc: 0.8492+/-0.0021 | GDP: 0.7488+/-0.0427 | MI: 0.0768 | MI_sk: 0.2849

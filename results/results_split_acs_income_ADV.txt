@@ -1,4 +1,4 @@
-# dataset=acs_income method=ADV gpu=4 task=classification n=20000 d=9
+# dataset=acs_income method=ADV task=classification n=20000 d=9
   ADV                                (lam=0.01) | Acc: 0.7902+/-0.0062 | GDP: 0.5133+/-0.0598 | MI: 0.1251 | MI_sk: 0.3956
   ADV                                (lam=0.1) | Acc: 0.7899+/-0.0065 | GDP: 0.5126+/-0.0615 | MI: 0.0652 | MI_sk: 0.3698
   ADV                                (lam=0.5) | Acc: 0.7864+/-0.0063 | GDP: 0.4948+/-0.0474 | MI: 0.0029 | MI_sk: 0.3581

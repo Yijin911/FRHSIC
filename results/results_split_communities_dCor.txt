@@ -1,4 +1,4 @@
-# dataset=communities method=dCor gpu=7 task=regression n=1994 d=99
+# dataset=communities method=dCor task=regression n=1994 d=99
   dCor                               (lam=0.01) | MSE: 0.0192+/-0.0021 | GDP: 0.0291+/-0.0044 | MI: 0.0282 | MI_sk: 0.2395
   dCor                               (lam=0.1) | MSE: 0.0192+/-0.0021 | GDP: 0.0291+/-0.0047 | MI: 0.0095 | MI_sk: 0.1531
   dCor                               (lam=0.5) | MSE: 0.0194+/-0.0019 | GDP: 0.0288+/-0.0047 | MI: 0.0068 | MI_sk: 0.1573

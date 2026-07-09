@@ -1,4 +1,4 @@
-# dataset=communities method=FRHSIC (Ours) gpu=1 task=regression n=1994 d=99
+# dataset=communities method=FRHSIC (Ours) task=regression n=1994 d=99
   FRHSIC (Ours)                      (lam=0.01) | MSE: 0.0193+/-0.0021 | GDP: 0.0291+/-0.0043 | MI: 0.0208 | MI_sk: 0.2009
   FRHSIC (Ours)                      (lam=0.1) | MSE: 0.0191+/-0.0019 | GDP: 0.0288+/-0.0047 | MI: 0.0124 | MI_sk: 0.1594
   FRHSIC (Ours)                      (lam=0.5) | MSE: 0.0194+/-0.0019 | GDP: 0.0269+/-0.0047 | MI: 0.0011 | MI_sk: 0.1581

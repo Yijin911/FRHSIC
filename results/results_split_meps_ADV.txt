@@ -1,4 +1,4 @@
-# dataset=meps method=ADV gpu=4 task=classification n=13283 d=19
+# dataset=meps method=ADV task=classification n=13283 d=19
   ADV                                (lam=0.01) | Acc: 0.8034+/-0.0035 | GDP: 0.6260+/-0.0164 | MI: 0.2028 | MI_sk: 0.4019
   ADV                                (lam=0.1) | Acc: 0.8036+/-0.0040 | GDP: 0.6160+/-0.0152 | MI: 0.1237 | MI_sk: 0.3910
   ADV                                (lam=0.5) | Acc: 0.8032+/-0.0047 | GDP: 0.5589+/-0.0095 | MI: 0.0072 | MI_sk: 0.3880

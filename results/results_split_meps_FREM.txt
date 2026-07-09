@@ -1,4 +1,4 @@
-# dataset=meps method=FREM gpu=3 task=classification n=13283 d=19
+# dataset=meps method=FREM task=classification n=13283 d=19
   FREM                               (lam=0.01) | Acc: 0.8017+/-0.0065 | GDP: 0.6111+/-0.0243 | MI: 0.0353 | MI_sk: 0.4223
   FREM                               (lam=0.1) | Acc: 0.8019+/-0.0060 | GDP: 0.6207+/-0.0247 | MI: 0.0000 | MI_sk: 0.3929
   FREM                               (lam=0.5) | Acc: 0.8028+/-0.0055 | GDP: 0.6180+/-0.0235 | MI: 0.0000 | MI_sk: 0.3744

@@ -1,2 +1,2 @@
-# dataset=acs_income method=Unfair gpu=0 task=classification n=20000 d=9
+# dataset=acs_income method=Unfair task=classification n=20000 d=9
   Unfair                             (lam=0.0) | Acc: 0.7903+/-0.0052 | GDP: 0.5143+/-0.0593 | MI: 0.1504 | MI_sk: 0.3913

@@ -1,4 +1,4 @@
-# dataset=meps method=MMD (binned) gpu=2 task=classification n=13283 d=19
+# dataset=meps method=MMD (binned) task=classification n=13283 d=19
   MMD (binned)                       (lam=0.01) | Acc: 0.8018+/-0.0050 | GDP: 0.6096+/-0.0102 | MI: 0.2597 | MI_sk: 0.4254
   MMD (binned)                       (lam=0.1) | Acc: 0.8011+/-0.0049 | GDP: 0.5451+/-0.0140 | MI: 0.1961 | MI_sk: 0.4065
   MMD (binned)                       (lam=0.5) | Acc: 0.8000+/-0.0052 | GDP: 0.4601+/-0.0166 | MI: 0.0935 | MI_sk: 0.3851

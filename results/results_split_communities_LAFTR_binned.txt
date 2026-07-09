@@ -1,4 +1,4 @@
-# dataset=communities method=LAFTR (binned) gpu=6 task=regression n=1994 d=99
+# dataset=communities method=LAFTR (binned) task=regression n=1994 d=99
   LAFTR (binned)                     (lam=0.01) | MSE: 0.0189+/-0.0015 | GDP: 0.0289+/-0.0053 | MI: 0.0044 | MI_sk: 0.3170
   LAFTR (binned)                     (lam=0.1) | MSE: 0.0195+/-0.0026 | GDP: 0.0284+/-0.0043 | MI: 0.0000 | MI_sk: 0.4614
   LAFTR (binned)                     (lam=0.5) | MSE: 0.0221+/-0.0054 | GDP: 0.0258+/-0.0051 | MI: 0.0000 | MI_sk: 0.4528

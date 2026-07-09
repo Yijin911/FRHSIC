@@ -1,4 +1,4 @@
-# dataset=communities method=FREM gpu=3 task=regression n=1994 d=99
+# dataset=communities method=FREM task=regression n=1994 d=99
   FREM                               (lam=0.01) | MSE: 0.0187+/-0.0018 | GDP: 0.0281+/-0.0045 | MI: 0.0136 | MI_sk: 0.1752
   FREM                               (lam=0.1) | MSE: 0.0188+/-0.0018 | GDP: 0.0275+/-0.0047 | MI: 0.0093 | MI_sk: 0.1645
   FREM                               (lam=0.5) | MSE: 0.0186+/-0.0015 | GDP: 0.0249+/-0.0055 | MI: 0.0216 | MI_sk: 0.1580

@@ -1,4 +1,4 @@
-# dataset=acs_income method=FREM gpu=3 task=classification n=20000 d=9
+# dataset=acs_income method=FREM task=classification n=20000 d=9
   FREM                               (lam=0.01) | Acc: 0.7921+/-0.0049 | GDP: 0.5328+/-0.0291 | MI: 0.0884 | MI_sk: 0.3527
   FREM                               (lam=0.1) | Acc: 0.7912+/-0.0051 | GDP: 0.5234+/-0.0291 | MI: 0.0024 | MI_sk: 0.3329
   FREM                               (lam=0.5) | Acc: 0.7912+/-0.0050 | GDP: 0.5169+/-0.0294 | MI: 0.0000 | MI_sk: 0.3474

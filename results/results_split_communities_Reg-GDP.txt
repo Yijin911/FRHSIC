@@ -1,4 +1,4 @@
-# dataset=communities method=Reg-GDP gpu=2 task=regression n=1994 d=99
+# dataset=communities method=Reg-GDP task=regression n=1994 d=99
   Reg-GDP                            (lam=0.01) | MSE: 0.0192+/-0.0022 | GDP: 0.0288+/-0.0044 | MI: 0.1338 | MI_sk: 0.3947
   Reg-GDP                            (lam=0.1) | MSE: 0.0191+/-0.0022 | GDP: 0.0252+/-0.0047 | MI: 0.1458 | MI_sk: 0.4055
   Reg-GDP                            (lam=0.5) | MSE: 0.0194+/-0.0013 | GDP: 0.0176+/-0.0037 | MI: 0.0920 | MI_sk: 0.3055

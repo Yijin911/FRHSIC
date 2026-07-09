@@ -1,4 +1,4 @@
-# dataset=meps method=FRHSIC (Ours) gpu=1 task=classification n=13283 d=19
+# dataset=meps method=FRHSIC (Ours) task=classification n=13283 d=19
   FRHSIC (Ours)                      (lam=0.01) | Acc: 0.8037+/-0.0042 | GDP: 0.6278+/-0.0160 | MI: 0.1898 | MI_sk: 0.4266
   FRHSIC (Ours)                      (lam=0.1) | Acc: 0.8031+/-0.0055 | GDP: 0.6292+/-0.0138 | MI: 0.1012 | MI_sk: 0.4101
   FRHSIC (Ours)                      (lam=0.5) | Acc: 0.8050+/-0.0054 | GDP: 0.6300+/-0.0098 | MI: 0.0487 | MI_sk: 0.3952

@@ -1,4 +1,4 @@
-# dataset=meps method=Reg-GDP gpu=2 task=classification n=13283 d=19
+# dataset=meps method=Reg-GDP task=classification n=13283 d=19
   Reg-GDP                            (lam=0.01) | Acc: 0.8031+/-0.0039 | GDP: 0.5957+/-0.0145 | MI: 0.2243 | MI_sk: 0.4520
   Reg-GDP                            (lam=0.1) | Acc: 0.8014+/-0.0065 | GDP: 0.3702+/-0.0065 | MI: 0.1905 | MI_sk: 0.3983
   Reg-GDP                            (lam=0.5) | Acc: 0.7868+/-0.0029 | GDP: 0.0350+/-0.0067 | MI: 0.1081 | MI_sk: 0.2765

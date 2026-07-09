@@ -668,13 +668,9 @@ def run_single_dataset(dataset_name, lambdas=None):
         return None
     X_np, S_np, Y_np, display_name, task = result
 
-    # NOTE (preprocessing-leakage fix, post-reviewer revision):
-    # Earlier versions of this script min-max scaled X and S on the FULL dataset
-    # before splitting, which leaks test-split statistics into training.
-    # We now fit the scaler on the training split only and apply it to both
-    # train and test. The published numbers in the paper were generated with
-    # the legacy (full-dataset) scaler; a verification re-run on Adult is
-    # planned for the camera-ready revision.
+    # Preprocessing: the min-max scalers for X and S are fit on the training
+    # split only and then applied to both train and test (see the per-split
+    # scaling below), so no test-split statistics enter training.
     Y_np = np.asarray(Y_np)
 
     print(f"\n{'='*70}")

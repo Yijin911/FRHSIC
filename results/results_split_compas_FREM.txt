@@ -1,4 +1,4 @@
-# dataset=compas method=FREM gpu=3 task=classification n=6172 d=16
+# dataset=compas method=FREM task=classification n=6172 d=16
   FREM                               (lam=0.01) | Acc: 0.6538+/-0.0142 | GDP: 0.1209+/-0.0319 | MI: 0.0000 | MI_sk: 0.2577
   FREM                               (lam=0.1) | Acc: 0.6534+/-0.0135 | GDP: 0.1203+/-0.0316 | MI: 0.0000 | MI_sk: 0.2550
   FREM                               (lam=0.5) | Acc: 0.6531+/-0.0136 | GDP: 0.1189+/-0.0311 | MI: 0.0000 | MI_sk: 0.2550

@@ -1,4 +1,4 @@
-# dataset=compas method=ADV gpu=4 task=classification n=6172 d=16
+# dataset=compas method=ADV task=classification n=6172 d=16
   ADV                                (lam=0.01) | Acc: 0.6541+/-0.0134 | GDP: 0.1224+/-0.0257 | MI: 0.0000 | MI_sk: 0.2625
   ADV                                (lam=0.1) | Acc: 0.6541+/-0.0130 | GDP: 0.1218+/-0.0250 | MI: 0.0000 | MI_sk: 0.2631
   ADV                                (lam=0.5) | Acc: 0.6534+/-0.0149 | GDP: 0.1222+/-0.0256 | MI: 0.0000 | MI_sk: 0.2748
